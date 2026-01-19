@@ -1,0 +1,87 @@
+	<div class="container py-4 px-md-3 mx-auto" id="simulacao-results">
+	<div class="col-12 max-width-md-75 mx-auto mb-3">
+		<div class="card text-bg-tertiary">
+			<div class="card-header p-3 d-flex justify-content-between align-items-center">
+				<h6 class="mb-0">Resultado da simulação</h6>
+			</div>
+			<div class="card-body">
+				<div class="row g-3">
+					<div class="col-lg-6">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Custo total efetivo</div>
+							<div class="fs-5" data-simulacao-field="custo-total-efetivo">R$ 0,00</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Valor financiado</div>
+							<div class="fs-5" data-simulacao-field="valor-financiado">R$ 0,00</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Valor total amortizado</div>
+							<div class="fs-5" data-simulacao-field="valor-total-amortizado">R$ 0,00</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Valor total juros</div>
+							<div class="fs-5" data-simulacao-field="valor-total-juros">R$ 0,00</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Parcela inicial</div>
+							<div class="fs-5" data-simulacao-field="parcela-inicial">R$ 0,00</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Parcela final</div>
+							<div class="fs-5" data-simulacao-field="parcela-final">R$ 0,00</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="p-3 border rounded-3 bg-body">
+							<div class="fw-semibold text-muted small text-uppercase">Quantidade de parcelas</div>
+							<div class="fs-5" data-simulacao-field="quantidade-parcelas">0</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 max-width-md-75 mx-auto mb-4">
+		<div class="card text-bg-tertiary">
+			<div class="card-header p-3 d-flex justify-content-between align-items-center">
+				<h6 class="mb-0">Evolução de parcelas</h6>
+			</div>
+
+			<div class="table-responsive card-body">
+				<table class="table table-striped table-hover table-bordered align-middle mb-0" id="simulacao-results-table">
+					<thead class="text-uppercase small">
+						<tr>
+							<th scope="col" class="text-center">Nº Parcela</th>
+							<th scope="col">Prestação</th>
+							<th scope="col">Saldo devedor</th>
+							<th scope="col">Total encargos</th>
+						</tr>
+					</thead>
+					<tbody>
+						<template id="simulacao-parcela-template">
+							<tr>
+								<td class="numero-parcela text-center" title="Número da parcela"></td>
+								<td class="prestacao" title="Valor da prestação"></td>
+								<td class="saldo-devedor" title="Saldo devedor após o pagamento"></td>
+								<td class="total-encargos" title="Encargos totais da parcela"></td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

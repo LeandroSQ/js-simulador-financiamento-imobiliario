@@ -1,0 +1,35 @@
+{
+	"compilerOptions": {
+		"module": "ESNext",
+		"target": "ES2022",
+		"lib": ["ES2023", "DOM"],
+
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true,
+		"useDefineForClassFields": true,
+		"strictNullChecks": true,
+		"moduleResolution": "Bundler",
+
+		"allowJs": true,
+		"checkJs": true,
+
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+
+	},
+	"include": [
+		"types/*.d.ts",
+		"types/*.ts",
+		"**/*.mts",
+		"**/*.cts",
+		"**/*.tsx",
+		"**/*.mtsx",
+		"**/*.js",
+		"**/*.mjs",
+		"**/*.cjs",
+		"**/*.jsx",
+		"**/*.mjsx"
+	],
+	"exclude": ["dist", "build", "coverage", "_lintignore", "**/*-buildignore*", "**/*_buildignore*"],
+}

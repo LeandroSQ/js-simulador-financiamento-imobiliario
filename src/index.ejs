@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simulador de financiamento</title>
+        <link rel="stylesheet" href="styles/main.css">
+
+		<%- include("./views/head/theming.ejs") %>
+		<%- include("./views/head/fonts.ejs") %>
+		<%- include("./views/head/favicon.ejs") %>
+		<%- include("./views/head/seo.ejs") %>
+    </head>
+    <body class="min-vh-100 d-flex flex-column">
+		<%- include("./views/header.ejs") %>
+
+		<%- include("./views/form.ejs") %>
+
+		<%- include("./views/simulation.ejs") %>
+
+		<div class="flex-grow-1"></div>
+
+		<%- include("./views/footer.ejs") %>
+
+		<%- include("./views/modal/amortizacao.ejs") %>
+		<%- include("./views/modal/generic.ejs") %>
+		<%- include("./views/modal/confirmation.ejs") %>
+
+		<script src="scripts/main.js"></script>
+    </body>
+</html>

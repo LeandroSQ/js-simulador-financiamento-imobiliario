@@ -1,0 +1,128 @@
+@import "variables";
+
+// Custom sizing
+$utilities: (
+	"max-width": (
+		property: max-width,
+		responsive: true,
+		values: (
+			0: 0%,
+			25: 25%,
+			50: 50%,
+			75: 75%,
+			100: 100%,
+		)
+	)
+);
+
+
+$primary: #1abc9c;
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Primary button
+[data-bs-theme="light"] {
+  .btn-primary {
+	--bs-btn-color: #fff;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-disabled-bg: #f8f9fa;
+	--bs-btn-disabled-color: #212121;
+	--bs-btn-disabled-border-color: var(--bs-border-color);
+  }
+}
+
+[data-bs-theme="dark"] {
+  .btn-primary {
+	--bs-btn-color: #fff;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-disabled-bg: transparent;
+	--bs-btn-disabled-color: #fff;
+	--bs-btn-disabled-border-color: var(--bs-border-color);
+  }
+}
+
+// Select - append
+.form-floating>.form-select.bg-body-tertiary~label::after {
+	background: var(--bs-bg-tertiary);
+}
+
+.w-18 {
+	width: #{3 / 16 * 100%} !important;
+}
+
+@include media-breakpoint-down(md) {
+	.w-18 {
+		width: calc(#{4 / 16 * 100%}) !important;
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	.w-18 {
+		width: calc(#{4 / 16 * 100%}) !important;
+	}
+}
+
+// Input group text
+.input-group-text {
+	width: 5ch;
+	text-align: center;
+}
+
+// Color theme switch
+#color-switch {
+	input + label {
+		opacity: 0;
+		transform: translateX(0%);
+		transition: opacity 150ms ease-out, transform 350ms ease-in-out;
+	}
+
+	input:checked + label {
+		opacity: 1;
+	}
+
+	&:not(:hover) {
+		input:checked {
+			&:first-of-type + label {
+				transform: translateX(200%);
+			}
+
+			&:not(:first-of-type):not(:last-of-type) + label {
+				transform: translateX(100%);
+			}
+
+			+ label {
+				border-radius: 5px;
+			}
+		}
+	}
+
+	&:hover, &:active {
+		input + label {
+			opacity: 1 !important;
+		}
+	}
+
+}
+
+// Icons
+$la-font-path: "/assets/fonts";
+@import "../../node_modules/line-awesome/dist/line-awesome/scss/line-awesome";
+
+// Simulação results
+#simulacao-results {
+	max-height: 0px;
+	overflow: hidden;
+	opacity: 0;
+	transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+	pointer-events: none;
+
+	&.active {
+		max-height: unset;
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.card-body {
+		max-height: 400px;
+		overflow: auto;
+	}
+}
