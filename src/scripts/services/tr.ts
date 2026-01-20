@@ -31,7 +31,7 @@ export abstract class TR {
 	/**
 	 * Busca a taxa TR acumulada em um determinado período anual.
 	 */
-	public static async getTRRate(year: number | null = null): Promise<number> {
+	public static async fetchRate(year: number | null = null): Promise<number> {
 		if (year === null) year = new Date().getFullYear();
 
 		const localStorageKey = `tr-${year}`;

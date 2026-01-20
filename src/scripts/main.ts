@@ -3,6 +3,7 @@ import { UIController } from "./ui/ui-controller";
 import { Selic } from "./services/selic";
 import { WorkerBinding } from "./worker/worker-binding";
 import { ValoresSimulacao } from "./types/valores-simulacao";
+import { TR } from "./services/tr";
 
 class App {
 
@@ -24,6 +25,7 @@ class App {
 			this.ui.addEventListenerOnSubmit(this.onSubmit.bind(this));
 
 			this.setupInitialValues();
+			await this.fetchRates();
 		} catch (error) {
 			console.error(error);
 			console.trace(error);
@@ -32,11 +34,17 @@ class App {
 		}
 	}
 
-	private async setupSelic() {
-		const selic = await Selic.getSelicRate();
-		this.ui.setField("juros", selic);
-	}
+	private async fetchRates() {
+		const year = new Date().getFullYear();
+		const selic = await Selic.fetchRate(year);
+		// const cdi = await Selic.getCdiRate();
+		const tr = await TR.fetchRate(year);
+		console.log(`Taxa Selic atual: ${selic.toFixed(2)}% ao ano`);
+		// console.log(`Taxa CDI atual: ${cdi.toFixed(2)}% ao ano`);
+		console.log(`Taxa TR atual: ${tr.toFixed(2)}% ao ano`);
 
+		this.ui.setupRates(selic, tr, year);
+	}
 
 	private setupInitialValues() {
 		if (!DEBUG) return;

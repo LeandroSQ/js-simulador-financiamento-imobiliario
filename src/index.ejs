@@ -11,17 +11,19 @@
 		<%- include("./views/head/favicon.ejs") %>
 		<%- include("./views/head/seo.ejs") %>
     </head>
-    <body class="min-vh-100 d-flex flex-column">
+    <body class="min-vh-100 d-flex flex-column bg-body-tertiary">
 		<%- include("./views/header.ejs") %>
 
-		<div class="container py-4 px-md-3 mx-auto">
+		<div class="container py-4 px-md-3">
 			<div class="mb-5 mx-auto max-width-md-75">
 				<%- include("./views/form.ejs") %>
 
 				<%- include("./views/simulation.ejs") %>
+
+				<%- include("./views/rates.ejs") %>
 			</div>
 		</div>
-		
+
 		<div class="flex-grow-1"></div>
 
 		<%- include("./views/footer.ejs") %>

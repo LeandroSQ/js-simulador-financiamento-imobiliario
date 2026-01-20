@@ -59,7 +59,10 @@ function initializeBrowserSync() {
 
 function handleHtml() {
 	return src(["src/**/*.ejs", "!src/views/**/_*.ejs"])
-		.pipe(ejs({}))
+		.pipe(ejs({}).on('error', (err) => {
+			console.error(err);
+			this.emit('end');
+		}))
 		.pipe(htmlMinify(htmlOptions))
 		.pipe(rename({ extname: ".html" })) // Correctly rename to .html
 		.pipe(dest("./dist")) // Removed non-standard 'ext' option

@@ -38,7 +38,7 @@ describe("Selic", () => {
             json: async () => ([{ data: "01/01/2023", valor: 13.75 }])
         });
 
-        const rate = await Selic.getSelicRate(2023);
+        const rate = await Selic.fetchRate(2023);
 
         expect(rate).toBe(13.75);
         expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -48,7 +48,7 @@ describe("Selic", () => {
     test("should return cached value if available", async () => {
         localStorageMock.getItem.mockReturnValueOnce("10.5");
 
-        const rate = await Selic.getSelicRate(2023);
+        const rate = await Selic.fetchRate(2023);
 
         expect(rate).toBe(10.5);
         expect(mockFetch).not.toHaveBeenCalled();
@@ -60,7 +60,7 @@ describe("Selic", () => {
         });
 
         const currentYear = new Date().getFullYear();
-        const rate = await Selic.getSelicRate();
+        const rate = await Selic.fetchRate();
 
         expect(rate).toBe(11.25);
         expect(localStorageMock.setItem).toHaveBeenCalledWith(`selic-${currentYear}`, "11.25");
@@ -71,6 +71,6 @@ describe("Selic", () => {
             json: async () => ([])
         });
 
-        await expect(Selic.getSelicRate(2023)).rejects.toThrow("Não foi possível obter a taxa Selic para o período especificado");
+        await expect(Selic.fetchRate(2023)).rejects.toThrow("Não foi possível obter a taxa Selic para o período especificado");
     });
 });

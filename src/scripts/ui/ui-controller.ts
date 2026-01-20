@@ -12,6 +12,7 @@ import { ConfirmationModalController } from "./confirmation-modal-controller";
 import { FormController, OnSubmitEventListener } from "./form-controller";
 import { GenericModalController } from "./generic-modal-controller";
 import { SimulacaoResultController } from "./simulacao-result-controller";
+import { TaxasResultController } from "./taxas-result-controller";
 
 const MASK_CONFIG = {
 	money: {
@@ -45,6 +46,7 @@ export class UIController {
 	private amortizacoesListController: AmortizacoesListController;
 	private colorModeController: ColorModeController;
 	private simulacaoResultController: SimulacaoResultController;
+	private taxasResultController: TaxasResultController;
 
 	private onSubmitEventListener?: OnSubmitEventListener = undefined;
 
@@ -56,6 +58,7 @@ export class UIController {
 		this.amortizacaoModalController = new AmortizacaoModalController();
 		this.colorModeController = new ColorModeController();
 		this.simulacaoResultController = new SimulacaoResultController();
+		this.taxasResultController = new TaxasResultController();
 
 		this.setupForm();
 		this.setupAmortizacoes();
@@ -65,6 +68,10 @@ export class UIController {
 
 	public submit() {
 		this.formController.submit();
+	}
+
+	public setupRates(selic: number, tr: number, ano: number) {
+		this.taxasResultController.render(selic, tr, ano);
 	}
 
 	private onSubmitEvent(valores: ValoresSimulacao) {

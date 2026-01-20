@@ -41,7 +41,7 @@ describe("TR", () => {
             json: async () => ([{ data: "01/01/2023", valor: "0,15" }])
         });
 
-        const rate = await TR.getTRRate(2023);
+        const rate = await TR.fetchRate(2023);
 
         expect(rate).toBe(0.15); // "0,15" -> 0.15
         expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -53,14 +53,14 @@ describe("TR", () => {
             json: async () => ([{ data: "01/01/2023", valor: "0.20" }])
         });
 
-        const rate = await TR.getTRRate(2023);
+        const rate = await TR.fetchRate(2023);
         expect(rate).toBe(0.20);
     });
 
     test("should return cached value if available", async () => {
         localStorageMock.getItem.mockReturnValueOnce("0.05");
 
-        const rate = await TR.getTRRate(2023);
+        const rate = await TR.fetchRate(2023);
 
         expect(rate).toBe(0.05);
         expect(mockFetch).not.toHaveBeenCalled();
@@ -71,6 +71,6 @@ describe("TR", () => {
             json: async () => ([{ data: "...", valor: "invalid" }])
         });
 
-        await expect(TR.getTRRate(2023)).rejects.toThrow("Não foi possível obter a taxa TR para o período especificado");
+        await expect(TR.fetchRate(2023)).rejects.toThrow("Não foi possível obter a taxa TR para o período especificado");
     });
 });

@@ -27,9 +27,9 @@ export abstract class Selic {
 	/**
 	 * Método que busca a taxa Selic acumulada em um determinado período anual.
 	 */
-	public static async getSelicRate(year: number | null = null): Promise<number> {
+	public static async fetchRate(year: number | null = null): Promise<number> {
 		if (year === null) year = new Date().getFullYear();
-		
+
 		const localStorageKey = `selic-${year}`;
 		const cachedRate = (DEBUG ? localStorage : sessionStorage).getItem(localStorageKey);
 		if (cachedRate) {

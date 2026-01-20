@@ -47,6 +47,9 @@ importers:
       line-awesome:
         specifier: ^1.3.0
         version: 1.3.0
+      nord:
+        specifier: ^0.2.1
+        version: 0.2.1
       sass:
         specifier: ^1.77.6
         version: 1.77.6
@@ -2627,6 +2630,9 @@ packages:
 
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
+
+  nord@0.2.1:
+    resolution: {integrity: sha512-/AD7JGJbcp1pB5XwYkJyivqdeXofUP5u2lkif6vLGLc+SsV9OCC0JFNpVwM5pqHuFqbyojRt6xILuidJOwwJDQ==}
 
   normalize-path@2.1.1:
     resolution: {integrity: sha512-3pKJwH184Xo/lnH6oyP1q2pMd7HcypqqmRs91/6/i2CGtWwIKGCkOOMTm/zXbgTEWHw1uNpNi/igc3ePOYHb6w==}
@@ -6568,6 +6574,8 @@ snapshots:
   node-releases@2.0.14: {}
 
   node-releases@2.0.19: {}
+
+  nord@0.2.1: {}
 
   normalize-path@2.1.1:
     dependencies:
