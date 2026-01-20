@@ -10,6 +10,12 @@ export abstract class Selic {
 		return `${this.formatNumber(date.getDate())}/${this.formatNumber(date.getMonth() + 1)}/${this.formatNumber(date.getFullYear(), 4)}`;
 	}
 
+	private static normalizeRate(rawRate: unknown): number {
+		const normalized = parseFloat(String(rawRate).replace(",", "."));
+		if (Number.isNaN(normalized)) throw new Error("Não foi possível obter a taxa Selic para o período especificado");
+		return normalized;
+	}
+
 	private static async fetch(year: number): Promise<number> {
 		// Pega um mês anterior ao atual para garantir que a taxa do ano anterior esteja disponível
 		const startDate = new Date(year, new Date().getMonth() - 1, 1);
@@ -17,11 +23,9 @@ export abstract class Selic {
 
 		const response = await fetch(`${this.BASE_URL}?formato=json&dataInicial=${startDateString}`);
 		const data = await response.json();
-		const rate = data[data.length - 1]?.valor;
+		const rawRate = data[data.length - 1]?.valor;
 
-		if (rate === undefined) throw new Error("Não foi possível obter a taxa Selic para o período especificado");
-
-		return rate;
+		return this.normalizeRate(rawRate);
 	}
 
 	/**
