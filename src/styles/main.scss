@@ -108,8 +108,8 @@ $font-family-sans-serif: 'Ubuntu', -apple-system, system-ui, BlinkMacSystemFont,
 }
 
 // Icons
-$la-font-path: "../assets/fonts";
-@import "../../node_modules/line-awesome/dist/line-awesome/scss/line-awesome";
+// $la-font-path: "../assets/fonts";
+// @import "../../node_modules/line-awesome/dist/line-awesome/scss/line-awesome";
 
 // Simulação results
 #simulacao-results {
@@ -130,4 +130,9 @@ $la-font-path: "../assets/fonts";
 		max-height: 500px;
 		overflow: auto;
 	}
+}
+
+.input-group-text {
+	min-width: 51px;
+	text-align: center;
 }
