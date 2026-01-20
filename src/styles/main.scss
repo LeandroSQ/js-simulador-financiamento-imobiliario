@@ -18,10 +18,35 @@ $utilities: (
 // Set primary color
 $primary: #1abc9c;
 
+// Set shadow color
+// Light mode (compile-time; affects Bootstrap defaults)
+$shadow-color: darken($primary, 10%);
+$box-shadow: 0 .5rem 1rem rgba($shadow-color, 0.15);
+$box-shadow-sm: 0 .125rem .25rem rgba($shadow-color, 0.075);
+$box-shadow-lg: 0 1rem 3rem rgba($shadow-color, 0.175);
+$box-shadow-inset: inset 0 1px 2px rgba($shadow-color, 0.075);
+
+// Dark mode (runtime; override Bootstrap CSS variables)
+$shadow-color-dark: #00000083;
+html[data-bs-theme="dark"] {
+	body {
+		background-color: #121212 !important;
+	}
+	
+	--bs-box-shadow: 0 .5rem 1rem #{rgba($shadow-color-dark, 0.25)} !important;
+	--bs-box-shadow-sm: 0 .125rem .25rem #{rgba($shadow-color-dark, 0.175)} !important;
+	--bs-box-shadow-lg: 0 1rem 3rem #{rgba($shadow-color-dark, 0.30)} !important;
+	--bs-box-shadow-inset: inset 0 1px 2px #{rgba($shadow-color-dark, 0.175)} !important;
+}
+
 // Set body font
 $font-family-sans-serif: 'Ubuntu', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+html:not([data-bs-theme="dark"]) table {
+	--bs-table-striped-bg: #f3f3f354 !important;
+}
 
 // Primary button
 [data-bs-theme="light"] {
@@ -48,6 +73,7 @@ $font-family-sans-serif: 'Ubuntu', -apple-system, system-ui, BlinkMacSystemFont,
 .form-floating>.form-select.bg-body-tertiary~label::after {
 	background: var(--bs-bg-tertiary);
 }
+
 
 .w-18 {
 	width: #{3 / 16 * 100%} !important;
@@ -106,10 +132,6 @@ $font-family-sans-serif: 'Ubuntu', -apple-system, system-ui, BlinkMacSystemFont,
 	}
 
 }
-
-// Icons
-// $la-font-path: "../assets/fonts";
-// @import "../../node_modules/line-awesome/dist/line-awesome/scss/line-awesome";
 
 // Simulação results
 #simulacao-results {

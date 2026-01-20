@@ -1,9 +1,9 @@
 import "./utils/extensions";
-import { UIController } from "./ui/ui-controller";
 import { Selic } from "./services/selic";
-import { WorkerBinding } from "./worker/worker-binding";
-import { ValoresSimulacao } from "./types/valores-simulacao";
 import { TR } from "./services/tr";
+import { ValoresSimulacao } from "./types/valores-simulacao";
+import { UIController } from "./ui/ui-controller";
+import { WorkerBinding } from "./worker/worker-binding";
 
 class App {
 
@@ -11,7 +11,7 @@ class App {
 	private simulador = new WorkerBinding();
 
 	constructor() {
-		const callback = Function.oneshot(this.setup.bind(this));
+		const callback = Function.oneshot<VoidFunction>(this.setup.bind(this));
 		window.addEventListener("DOMContentLoaded", callback);
 		window.addEventListener("load", callback);
 		document.addEventListener("load", callback);
@@ -74,6 +74,7 @@ class App {
 		console.log(result);
 		this.ui.showResultado(result);
 	}
+
 }
 
 new App();

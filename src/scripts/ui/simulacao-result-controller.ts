@@ -57,6 +57,8 @@ export class SimulacaoResultController {
 			}
 
 			this.setText(row, ".numero-parcela", (index + 1).toLocaleString("pt-BR"));
+			this.setText(row, ".amortizacao", mes.valorAmortizacao.toCurrencyString());
+			this.setText(row, ".juros", mes.valorJuros.toCurrencyString());
 			this.setText(row, ".prestacao", mes.valorParcela.toCurrencyString());
 			this.setText(row, ".saldo-devedor", mes.saldoDevedor.toCurrencyString());
 			this.setText(row, ".total-encargos", mes.valorEncargo.toCurrencyString());
