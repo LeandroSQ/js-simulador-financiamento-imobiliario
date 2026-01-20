@@ -1,6 +1,7 @@
-import { Resultado } from "../types/Resultado";
+import { Resultado } from "../types/resultado";
 
 export class SimulacaoResultController {
+
 	private readonly container: HTMLElement;
 	private readonly template: HTMLTemplateElement;
 	private readonly tableBody: HTMLTableSectionElement;
@@ -14,7 +15,7 @@ export class SimulacaoResultController {
 	private readonly quantidadeParcelasElement: HTMLElement;
 
 	constructor() {
-		this.container = document.getElementByIdOrThrow<HTMLElement>("simulacao-results");
+		this.container = document.getElementByIdOrThrow("simulacao-results");
 		this.template = this.container.querySelector<HTMLTemplateElement>("#simulacao-parcela-template") ?? (() => { throw new Error("Template de parcela não encontrado"); })();
 		this.tableBody = this.container.querySelector<HTMLTableSectionElement>("#simulacao-results-table tbody") ?? (() => { throw new Error("Tabela de resultados não encontrada"); })();
 
@@ -44,7 +45,7 @@ export class SimulacaoResultController {
 
 	private renderTabela(evolucao: Resultado["evolucao"]) {
 		const existingRows = this.tableBody.querySelectorAll("tr");
-		existingRows.forEach(row => row.remove());
+		existingRows.forEach(row => { row.remove(); });
 
 		const fragment = document.createDocumentFragment();
 
@@ -81,4 +82,5 @@ export class SimulacaoResultController {
 		}
 		element.textContent = value;
 	}
+
 }

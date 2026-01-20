@@ -71,7 +71,7 @@ function watchHtml() {
 }
 
 function handleTs() {
-	return src(["src/scripts/main.ts", "src/scripts/worker.ts"])
+	return src(["src/scripts/main.ts", "src/scripts/worker/worker.ts"])
 		.pipe(gulpEsbuild())
 		.pipe(dest("./dist/scripts"))
 		.pipe(reloadBrowsers());

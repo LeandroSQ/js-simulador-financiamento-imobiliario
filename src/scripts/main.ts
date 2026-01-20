@@ -1,13 +1,12 @@
-import "./extensions";
-import { UI } from "./ui";
-import { Selic } from "./selic";
-import { WorkerBinding } from "./worker.binding";
+import "./utils/extensions";
+import { UIController } from "./ui/ui-controller";
+import { Selic } from "./services/selic";
+import { WorkerBinding } from "./worker/worker-binding";
 import { ValoresSimulacao } from "./types/valores-simulacao";
-import { TR } from "./tr";
 
 class App {
 
-	private ui!: UI;
+	private ui!: UIController;
 	private simulador = new WorkerBinding();
 
 	constructor() {
@@ -21,7 +20,7 @@ class App {
 
 	public async setup() {
 		try {
-			this.ui = new UI();
+			this.ui = new UIController();
 			this.ui.addEventListenerOnSubmit(this.onSubmit.bind(this));
 
 			this.setupInitialValues();

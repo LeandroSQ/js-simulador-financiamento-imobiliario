@@ -50,7 +50,7 @@
 					<div class="form-floating">
 						<select class="form-select" id="juros-correcao" aria-label="Período">
 							<option value="pre" selected>Pré-fixado</option>
-							<option value="pos">Pós-fixado</option>
+							<option value="pos" disabled>Pós-fixado</option>
 						</select>
 						<label for="juros-correcao">Correção de juros</label>
 					</div>
@@ -131,7 +131,7 @@
 				</div>
 			</div>
 
-			<%- include("./amortizacao-list.ejs") %>
+			<%- include("./amortizacoes-list.ejs") %>
 
 			<div class="col-12 mt-4 justify-content-center d-flex">
 				<button id="submit" type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 max-width-md-25" disabled>Calcular</button>

@@ -19,12 +19,12 @@
  * - Valor total de amortização
  *
  */
-import { Amortizacao } from "./amortizacao";
-import { Correcao } from "./types/correcao";
-import { HistoricoMes } from "./types/historico-mes";
-import { Resultado } from "./types/Resultado";
-import { Tabela } from "./types/tabela";
-import { ValoresSimulacao } from "./types/valores-simulacao";
+import { Amortizacao } from "../models/amortizacao";
+import { Correcao } from "../types/correcao";
+import { HistoricoMes } from "../types/historico-mes";
+import { Resultado } from "../types/resultado";
+import { Tabela } from "../types/tabela";
+import { ValoresSimulacao } from "../types/valores-simulacao";
 
 export class SimuladorFinanciamento {
 

@@ -1,4 +1,4 @@
-import { TR } from "../src/scripts/tr";
+import { TR } from "../src/scripts/services/tr";
 
 // Mock global fetch
 const mockFetch = jest.fn();

@@ -1,4 +1,4 @@
-import { Selic } from "../src/scripts/selic";
+import { Selic } from "../src/scripts/services/selic";
 
 // Mock global fetch
 const mockFetch = jest.fn();

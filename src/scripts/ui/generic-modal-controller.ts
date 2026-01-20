@@ -1,6 +1,7 @@
 import * as bootstrap from "bootstrap";
 
 export class GenericModalController {
+
 	private readonly modalElement: HTMLElement;
 	private readonly modal: bootstrap.Modal;
 	private readonly header: HTMLElement;
@@ -8,7 +9,7 @@ export class GenericModalController {
 	private readonly body: HTMLElement;
 
 	constructor() {
-		this.modalElement = document.getElementByIdOrThrow<HTMLElement>("generic-modal");
+		this.modalElement = document.getElementByIdOrThrow("generic-modal");
 		this.modal = new bootstrap.Modal(this.modalElement);
 		this.header = document.getElementByIdOrThrow("generic-modal-header");
 		this.title = document.getElementByIdOrThrow("generic-modal-title");
@@ -24,4 +25,5 @@ export class GenericModalController {
 
 		this.modal.show();
 	}
+
 }

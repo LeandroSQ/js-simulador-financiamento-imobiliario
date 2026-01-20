@@ -1,18 +1,17 @@
 import * as bootstrap from "bootstrap";
 
-const HEADER_BACKGROUND_CLASSES = ["bg-danger", "bg-warning", "bg-success", "bg-info", "bg-primary"] as const;
+import { ConfirmationModalOptions } from "../types";
 
-type HeaderBackground = (typeof HEADER_BACKGROUND_CLASSES)[number];
-
-export interface ConfirmationModalOptions {
-	title: string;
-	message: string;
-	confirmLabel?: string;
-	cancelLabel?: string;
-	background?: HeaderBackground;
-}
+const HEADER_BACKGROUND_CLASSES = [
+	"bg-danger",
+	"bg-warning",
+	"bg-success",
+	"bg-info",
+	"bg-primary"
+] as const;
 
 export class ConfirmationModalController {
+
 	private readonly modalElement: HTMLElement;
 	private readonly modal: bootstrap.Modal;
 	private readonly header: HTMLElement;
@@ -23,16 +22,16 @@ export class ConfirmationModalController {
 	private pendingResolve?: (result: boolean) => void;
 
 	constructor() {
-		this.modalElement = document.getElementByIdOrThrow<HTMLElement>("confirmation-modal");
+		this.modalElement = document.getElementByIdOrThrow("confirmation-modal");
 		this.modal = new bootstrap.Modal(this.modalElement);
-		this.header = document.getElementByIdOrThrow<HTMLElement>("confirmation-modal-header");
-		this.title = document.getElementByIdOrThrow<HTMLElement>("confirmation-modal-title");
-		this.body = document.getElementByIdOrThrow<HTMLElement>("confirmation-modal-body");
+		this.header = document.getElementByIdOrThrow("confirmation-modal-header");
+		this.title = document.getElementByIdOrThrow("confirmation-modal-title");
+		this.body = document.getElementByIdOrThrow("confirmation-modal-body");
 		this.confirmButton = document.getElementByIdOrThrow<HTMLButtonElement>("confirmation-modal-confirm");
 		this.cancelButton = document.getElementByIdOrThrow<HTMLButtonElement>("confirmation-modal-cancel");
 
-		this.modalElement.addEventListener("hidden.bs.modal", () => this.handleHidden());
-		this.confirmButton.addEventListener("click", () => this.finish(true));
+		this.modalElement.addEventListener("hidden.bs.modal", () => { this.handleHidden(); });
+		this.confirmButton.addEventListener("click", () => { this.finish(true); });
 		this.cancelButton.addEventListener("click", event => {
 			event.preventDefault();
 			this.finish(false);
@@ -74,4 +73,5 @@ export class ConfirmationModalController {
 			resolve(false);
 		}
 	}
+
 }

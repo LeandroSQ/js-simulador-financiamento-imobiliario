@@ -1,17 +1,15 @@
+import { FormNumericField, Periodo, PeriodoPrazo } from "../types";
 import { Correcao } from "../types/correcao";
 import { Tabela } from "../types/tabela";
 import { ValoresSimulacao } from "../types/valores-simulacao";
-import { parseNumericField, setNumericFieldValue, validateMaskedNumericField } from "./numeric-field";
+import { parseNumericField, setNumericFieldValue, validateMaskedNumericField } from "../utils/numeric-field";
 
-export type Periodo = "Anual" | "Mensal";
-export type PeriodoPrazo = "Anos" | "Meses";
 
 export type OnSubmitEventListener = (values: ValoresSimulacao) => void;
 
-export type FormNumericField = "valor" | "entrada" | "juros" | "seguro" | "prazo" | "taxa-administracao";
-
 
 export class FormController {
+
 	private readonly inputValor: HTMLInputElement;
 	private readonly inputEntrada: HTMLInputElement;
 	private readonly inputJuros: HTMLInputElement;
@@ -26,7 +24,7 @@ export class FormController {
 	private readonly selectTabela: HTMLSelectElement;
 	private readonly submitButton: HTMLButtonElement;
 	private readonly numericFields: HTMLInputElement[];
-	private readonly formFields: Array<HTMLInputElement | HTMLSelectElement>;
+	private readonly formFields: (HTMLInputElement | HTMLSelectElement)[];
 	private readonly debouncedAutoSubmit: VoidFunction;
 
 	private static readonly AUTO_SUBMIT_DELAY = 350;
@@ -108,7 +106,7 @@ export class FormController {
 	}
 
 	private setupFormListeners() {
-		this.submitButton.addEventListener("click", event => this.handleSubmit(event));
+		this.submitButton.addEventListener("click", event => { this.handleSubmit(event); });
 
 		const handleFieldInteraction = () => {
 			if (this.validateForm()) {
@@ -179,4 +177,5 @@ export class FormController {
 			seguroMensal
 		};
 	}
+
 }

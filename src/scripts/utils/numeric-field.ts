@@ -1,12 +1,9 @@
-const moneyMaskClasses = ["mask-money", "mask-number"];
+const moneyMaskClasses = [
+	"mask-money",
+	"mask-number"
+];
 
 const numericRegExp = /[\d,.]/;
-
-function getAttribute(field: HTMLInputElement, attribute: string): string {
-	const value = field.getAttribute(attribute);
-	if (!value) throw new Error(`Atributo '${attribute}' não encontrado`);
-	return value;
-}
 
 function parseMaskedValue(value: string): number {
 	let parsedValue: string | number = value;
@@ -18,7 +15,7 @@ function parseMaskedValue(value: string): number {
 		}
 	}
 
-	return parseFloat(parsedValue as string);
+	return parseFloat(parsedValue);
 }
 
 export interface ParseNumericFieldOptions {
@@ -59,7 +56,7 @@ export function validateMaskedNumericField(field: HTMLInputElement) {
 	let value: number | null;
 	try {
 		value = parseNumericField(field, { required });
-	} catch (error) {
+	} catch {
 		field.setCustomValidity(required ? "Campo obrigatório" : "");
 		return;
 	}

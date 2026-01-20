@@ -1,13 +1,14 @@
 import VMasker from "vanilla-masker";
-import { Amortizacao } from "./amortizacao";
-import { Resultado } from "./types/Resultado";
+import { Amortizacao } from "./models/amortizacao";
+import { Resultado } from "./types/resultado";
 import { ValoresSimulacao } from "./types/valores-simulacao";
-import { AmortizacaoModalController, AmortizacaoModalResult } from "./ui/amortizacao-modal";
-import { AmortizacoesListController } from "./ui/amortizacoes-list";
+import { AmortizacaoModalController } from "./ui/amortizacao-modal-controller";
+import { AmortizacaoModalResult } from "./ui/types";
+import { AmortizacoesListController } from "./ui/amortizacoes-list-controller";
 import { ColorModeController } from "./ui/color-mode-controller";
-import { ConfirmationModalController } from "./ui/confirmation-modal";
+import { ConfirmationModalController } from "./ui/confirmation-modal-controller";
 import { FormController, FormNumericField, OnSubmitEventListener } from "./ui/form-controller";
-import { GenericModalController } from "./ui/generic-modal";
+import { GenericModalController } from "./ui/generic-modal-controller";
 import { SimulacaoResultController } from "./ui/simulacao-result-controller";
 
 const MASK_CONFIG = {
@@ -16,7 +17,7 @@ const MASK_CONFIG = {
 	integer: { precision: 0, separator: ",", delimiter: ".", zeroCents: false }
 } as const;
 
-export class UI {
+export class UIController {
 	public readonly amortizacoes: Array<Amortizacao> = [];
 
 	private formController: FormController;

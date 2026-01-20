@@ -1,12 +1,9 @@
-import { AmortizacaoModalResult } from "./amortizacao-modal";
-import { ConfirmationModalController } from "./confirmation-modal";
+import { AmortizacaoEntry, AmortizacaoModalResult } from "../types";
 
-interface AmortizacaoEntry {
-	data: AmortizacaoModalResult;
-	element: HTMLElement;
-}
+import { ConfirmationModalController } from "./confirmation-modal-controller";
 
 export class AmortizacoesListController {
+
 	private readonly container: HTMLElement;
 	private readonly template: HTMLTemplateElement;
 	private readonly emptyState: HTMLElement;
@@ -16,9 +13,9 @@ export class AmortizacoesListController {
 	private notifyChange: VoidFunction;
 
 	constructor(private readonly confirmationModal: ConfirmationModalController) {
-		this.container = document.getElementByIdOrThrow<HTMLElement>("amortizacoes-list");
+		this.container = document.getElementByIdOrThrow("amortizacoes-list");
 		this.template = document.getElementByIdOrThrow<HTMLTemplateElement>("amortizacoes-list-item");
-		this.emptyState = document.getElementByIdOrThrow<HTMLElement>("amortizacoes-list-empty");
+		this.emptyState = document.getElementByIdOrThrow("amortizacoes-list-empty");
 
 		this.notifyChange = Function.debounce(() => {
 			if (this.changeHandler) {
@@ -33,51 +30,60 @@ export class AmortizacoesListController {
 
 	public addEntry(data: AmortizacaoModalResult) {
 		const fragment = this.template.content.cloneNode(true) as DocumentFragment;
-		const element = fragment.firstElementChild as HTMLElement;
+		const element = fragment.firstElementChild as HTMLElement | null;
 		if (!element) {
 			throw new Error("Amortizações template should contain an element");
 		}
 
-		const periodoElement = element.querySelector(".amortizacao-periodo") as HTMLElement;
-		const valorElement = element.querySelector(".amortizacao-valor") as HTMLElement;
-		const deleteButton = element.querySelector(".amortizacao-delete-button") as HTMLButtonElement;
+		const periodoElement = element.querySelector(".amortizacao-periodo");
+		const valorElement = element.querySelector(".amortizacao-valor");
+		const deleteButton = element.querySelector(".amortizacao-delete-button");
 
 		if (!periodoElement || !valorElement || !deleteButton) {
 			throw new Error("Amortizações template missing required elements");
 		}
 
 		periodoElement.textContent = data.periodo === "Outro" ? (data.intervalo ?? "") : data.periodo;
-		valorElement.textContent = data.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+		valorElement.textContent = data.valor.toLocaleString("pt-BR", {
+			style: "currency",
+			currency: "BRL" 
+		});
 
-		deleteButton.addEventListener("click", async event => {
-			event.preventDefault();
-			const index = this.entries.findIndex(entry => entry.element === element);
-			if (index < 0) return;
+		deleteButton.addEventListener("click", event => {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			(async () => {
+				event.preventDefault();
+				const index = this.entries.findIndex(entry => entry.element === element);
+				if (index < 0) return;
 
-			const descricao = data.periodo === "Outro" ? data.intervalo : data.periodo;
-			const confirmed = await this.confirmationModal.confirm({
-				title: "Remover amortização",
-				message: `Deseja remover a amortização '${descricao} ${data.valor.toCurrencyString()}'?`,
-				confirmLabel: "Remover",
-				cancelLabel: "Cancelar",
-				background: "bg-danger"
-			});
+				const descricao = data.periodo === "Outro" ? data.intervalo : data.periodo;
+				const confirmed = await this.confirmationModal.confirm({
+					title: "Remover amortização",
+					message: `Deseja remover a amortização '${descricao} ${data.valor.toCurrencyString()}'?`,
+					confirmLabel: "Remover",
+					cancelLabel: "Cancelar",
+					background: "bg-danger"
+				});
 
-			if (!confirmed) return;
+				if (!confirmed) return;
 
-			this.removeEntry(index);
+				this.removeEntry(index);
+			})();
 		});
 
 		this.container.appendChild(fragment);
-		this.entries.push({ data, element });
+		this.entries.push({
+			data,
+			element 
+		});
 		console.log(this.entries, this.changeHandler);
 		this.emptyState.style.display = "none";
 		this.notifyChange();
 	}
 
 	public removeEntry(index: number) {
+		if (index < 0 || index >= this.entries.length) return;
 		const entry = this.entries[index];
-		if (!entry) return;
 
 		this.container.removeChild(entry.element);
 		this.entries.splice(index, 1);

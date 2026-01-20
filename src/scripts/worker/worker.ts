@@ -1,17 +1,13 @@
-import { ValoresSimulacao } from "./types/valores-simulacao";
-import { SimuladorFinanciamento } from "./simulador";
-import { Amortizacao } from "./amortizacao";
+import { SimuladorFinanciamento } from "../core/simulador-financiamento";
+import { Amortizacao } from "../models/amortizacao";
+import { WorkerRequest } from "../types";
 
-type WorkerRequest = {
-	valores: ValoresSimulacao;
-	amortizacoes: Amortizacao[];
-};
 
-self.onmessage = async (event: MessageEvent) => {
+self.onmessage = (event: MessageEvent) => {
 	try {
 		const { data } = event;
 		const parsed = JSON.parse(data) as WorkerRequest;
-		
+
 		const amortizacoes = parsed.amortizacoes.map(a => Amortizacao.fromJSON(a));
 
 		const simulador = new SimuladorFinanciamento(parsed.valores, amortizacoes);

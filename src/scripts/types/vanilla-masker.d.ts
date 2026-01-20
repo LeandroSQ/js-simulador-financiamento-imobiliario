@@ -12,9 +12,7 @@ declare module "vanilla-masker" {
 		maskMoney(options: MaskMoneyOptions): void;
 	}
 
-	interface VMaskerStatic {
-		(element: MaskableElements): VMaskerInstance;
-	}
+	type VMaskerStatic = (element: MaskableElements) => VMaskerInstance;
 
 	const VMasker: VMaskerStatic;
 	export default VMasker;

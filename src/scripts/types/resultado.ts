@@ -1,7 +1,7 @@
 import { HistoricoMes } from "./historico-mes";
 
 
-export type Resultado = {
+export interface Resultado {
 	valorFinanciado: number;
 	valorParcelaInicial: number;
 	valorParcelaFinal: number;
@@ -11,4 +11,4 @@ export type Resultado = {
 	valorTotalAmortizado: number;
 	seguroMensal: number;
 	taxaAdministracaoMensal: number;
-};
+}

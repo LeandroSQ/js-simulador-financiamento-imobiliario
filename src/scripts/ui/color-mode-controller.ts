@@ -1,14 +1,13 @@
-export type ColorMode = "dark" | "light" | null;
-
-export type ColorModeChangeHandler = (mode: ColorMode) => void;
+import { ColorMode, ColorModeChangeHandler } from "../types";
 
 export class ColorModeController {
+
 	private readonly radioGroup: HTMLElement;
 	private changeHandler?: ColorModeChangeHandler;
 	private currentMode: ColorMode = null;
 
 	constructor(id: string = "color-switch") {
-		this.radioGroup = document.getElementByIdOrThrow<HTMLElement>(id);
+		this.radioGroup = document.getElementByIdOrThrow(id);
 	}
 
 	public setup() {
@@ -32,7 +31,7 @@ export class ColorModeController {
 	}
 
 	private attachListeners() {
-		const radios = Array.from(this.radioGroup.querySelectorAll("input") as NodeListOf<HTMLInputElement>);
+		const radios = Array.from(this.radioGroup.querySelectorAll("input"));
 		for (const radio of radios) {
 			radio.addEventListener("change", event => {
 				const target = event.currentTarget as HTMLInputElement;
@@ -60,9 +59,10 @@ export class ColorModeController {
 	}
 
 	private syncRadios(mode: ColorMode) {
-		const radios = Array.from(this.radioGroup.querySelectorAll("input") as NodeListOf<HTMLInputElement>);
+		const radios = Array.from(this.radioGroup.querySelectorAll("input"));
 		for (const radio of radios) {
 			radio.checked = radio.value === mode || (mode === null && radio.value === "auto");
 		}
 	}
+
 }

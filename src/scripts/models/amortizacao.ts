@@ -1,6 +1,7 @@
 export type PeriodoAmortizacao = "Anual" | "Mensal" | "Bienal" | "Outro";
 
 export abstract class Amortizacao {
+
 	constructor(public readonly valor: number) {}
 
 	public abstract readonly type: PeriodoAmortizacao;
@@ -30,32 +31,40 @@ export abstract class Amortizacao {
 	public static validateCustomInterval(input: string | undefined): void {
 		AmortizacaoCustom.parse(input);
 	}
+
 }
 
 class AmortizacaoMensal extends Amortizacao {
+
 	public readonly type = "Mensal";
-	public appliesTo(_mes: number): boolean {
+	public appliesTo(): boolean {
 		return true;
 	}
+
 }
 
 class AmortizacaoAnual extends Amortizacao {
+
 	public readonly type = "Anual";
 	public appliesTo(mes: number): boolean {
 		return mes % 12 === 0;
 	}
+
 }
 
 class AmortizacaoBienal extends Amortizacao {
+
 	public readonly type = "Bienal";
 	public appliesTo(mes: number): boolean {
 		return mes % 24 === 0;
 	}
+
 }
 
-class AmortizacaoCustom extends Amortizacao {
+export class AmortizacaoCustom extends Amortizacao {
+
 	public readonly type = "Outro";
-	private readonly ranges: Array<{ start: number; end: number }>;
+	private readonly ranges: { start: number; end: number }[];
 
 	constructor(valor: number, public readonly input: string | undefined, public readonly prazoMeses: number) {
 		super(valor);
@@ -74,13 +83,13 @@ class AmortizacaoCustom extends Amortizacao {
 		return false;
 	}
 
-	public static parse(input: string | undefined): Array<{ start: number; end: number }> {
+	public static parse(input: string | undefined): { start: number; end: number }[] {
 		const trimmed = input?.trim();
 		if (!trimmed) {
 			throw new Error("Intervalo personalizado é obrigatório para amortizações do tipo 'Outro'");
 		}
 
-		const ranges: Array<{ start: number; end: number }> = [];
+		const ranges: { start: number; end: number }[] = [];
 		const parts = trimmed.split(",");
 
 		for (const part of parts) {
@@ -88,7 +97,10 @@ class AmortizacaoCustom extends Amortizacao {
 			if (!cleanPart) continue;
 
 			if (cleanPart.includes("-")) {
-				const [startStr, endStr] = cleanPart.split("-");
+				const [
+					startStr,
+					endStr
+				] = cleanPart.split("-");
 				const start = Number(startStr);
 				const end = Number(endStr);
 
@@ -97,7 +109,10 @@ class AmortizacaoCustom extends Amortizacao {
 					throw new Error(`Intervalo inválido: "${cleanPart}"`);
 				}
 
-				ranges.push({ start, end });
+				ranges.push({
+					start,
+					end 
+				});
 			} else {
 				const month = Number(cleanPart);
 				if (!Number.isInteger(month) || month <= 0) {
@@ -105,10 +120,14 @@ class AmortizacaoCustom extends Amortizacao {
 				}
 
 				// Unify singles as ranges [x, x]
-				ranges.push({ start: month, end: month });
+				ranges.push({
+					start: month,
+					end: month 
+				});
 			}
 		}
 
 		return ranges;
 	}
+
 }

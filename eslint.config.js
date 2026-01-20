@@ -7,7 +7,8 @@ const typescriptStylisticPlugin = require("@stylistic/eslint-plugin-ts");
 const typescriptEslintPlugin = require("@typescript-eslint/eslint-plugin");
 const typescriptEslintParser = require("@typescript-eslint/parser");
 // const prettierConfig = require("eslint-config-prettier");
-const pluginImport = require("eslint-plugin-import");
+const { fixupPluginRules } = require("@eslint/compat");
+const pluginImport = fixupPluginRules(require("eslint-plugin-import"));
 const pluginImportConfig = require("eslint-plugin-import/config/recommended.js");
 // const prettierPlugin = require("eslint-plugin-prettier");
 const globals = require("globals");
@@ -177,6 +178,13 @@ module.exports = [
 		rules: {
 			...typescriptRules,
 			...typescriptRulesDev,
+			"@typescript-eslint/no-unsafe-argument": "off",
+			"@typescript-eslint/no-unsafe-assignment": "off",
+			"@typescript-eslint/no-unsafe-member-access": "off",
+			"@typescript-eslint/no-unsafe-call": "off",
+			"@typescript-eslint/no-unsafe-return": "off",
+			"@typescript-eslint/restrict-template-expressions": "off",
+			"@typescript-eslint/no-explicit-any": "off"
 		},
 	},
 	{

@@ -1,7 +1,7 @@
-import { Amortizacao } from "../src/scripts/amortizacao";
-import { SimuladorFinanciamento } from "../src/scripts/simulador";
+import { Amortizacao } from "../src/scripts/models/amortizacao";
+import { SimuladorFinanciamento } from "../src/scripts/core/simulador-financiamento";
 import { Correcao } from "../src/scripts/types/correcao";
-import { Resultado } from "../src/scripts/types/Resultado";
+import { Resultado } from "../src/scripts/types/resultado";
 import { Tabela } from "../src/scripts/types/tabela";
 import { ValoresSimulacao } from "../src/scripts/types/valores-simulacao";
 

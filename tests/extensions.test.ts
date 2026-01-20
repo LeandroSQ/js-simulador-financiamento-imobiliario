@@ -9,7 +9,7 @@ if (typeof (globalThis as any).document === 'undefined') {
 }
 
 // We need to import the extensions AFTER setting up the globals they modify/access
-import "../src/scripts/extensions/index";
+import "../src/scripts/utils/extensions/index";
 
 describe("Extensions", () => {
     describe("Number.prototype.toCurrencyString", () => {

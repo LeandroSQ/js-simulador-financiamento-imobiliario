@@ -2,7 +2,7 @@ import { Correcao } from "./correcao";
 import { Tabela } from "./tabela";
 
 
-export type ValoresSimulacao = {
+export interface ValoresSimulacao {
 	valorImovel: number;
 	valorEntrada: number;
 	taxaJurosAnual: number;
@@ -12,4 +12,4 @@ export type ValoresSimulacao = {
 	tabela: Tabela;
 	correcao: Correcao;
 	projecaoTaxaJuros: number;
-};
+}
