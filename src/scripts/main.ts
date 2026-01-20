@@ -49,24 +49,13 @@ class App {
 	private setupInitialValues() {
 		if (!DEBUG) return;
 
-		function FGTS(valorMensal: number, qtdMeses: number, taxa = 3.0) {
-			const taxaMensal = Math.pow(1 + taxa / 100, 1 / 12) - 1;
-
-			return valorMensal * (
-				(Math.pow(1 + taxaMensal, qtdMeses) - 1) / taxaMensal
-			);
-		}
-
-		this.ui.setField("valor", 350_000);
-		this.ui.setField("entrada", 180_000);
+		this.ui.setField("valor", 600_000);
+		this.ui.setField("entrada", 200_000);
 		this.ui.setField("prazo", 35);
-		this.ui.setField("juros", 11.29);
-		this.ui.setField("seguro", 43.00);
-		this.ui.setField("taxa-administracao", 25.00);
-		this.ui.setAmortizacoes([
-			// { periodo: "Mensal", valor: 1000.00, intervalo: undefined },
-			{ periodo: "Bienal", valor: FGTS(1472, 24), intervalo: undefined },
-		]);
+		this.ui.setField("juros", 14.29);
+		this.ui.setField("seguro", 46.00);
+		this.ui.setField("taxa-administracao", 30.00);
+		this.ui.setAmortizacoes([]);
 
 		setTimeout(() => {
 			this.ui.submit();
