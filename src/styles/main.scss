@@ -108,7 +108,7 @@ $font-family-sans-serif: 'Ubuntu', -apple-system, system-ui, BlinkMacSystemFont,
 }
 
 // Icons
-$la-font-path: "assets/fonts";
+$la-font-path: "../assets/fonts";
 @import "../../node_modules/line-awesome/dist/line-awesome/scss/line-awesome";
 
 // Simulação results
