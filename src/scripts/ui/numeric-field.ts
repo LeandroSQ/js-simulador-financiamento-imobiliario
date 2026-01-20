@@ -90,5 +90,6 @@ export function validateMaskedNumericField(field: HTMLInputElement) {
 export function setNumericFieldValue(field: HTMLInputElement, value: number) {
 	const isMasked = Array.from(field.classList.values()).some(cls => moneyMaskClasses.includes(cls));
 	field.value = isMasked ? value.toFixed(2) : value.toString();
+	field.dispatchEvent(new Event("input", { bubbles: true }));
 	field.dispatchEvent(new Event("keyup"));
 }

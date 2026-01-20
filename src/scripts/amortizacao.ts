@@ -1,72 +1,114 @@
 export type PeriodoAmortizacao = "Anual" | "Mensal" | "Bienal" | "Outro";
 
-export class Amortizacao {
+export abstract class Amortizacao {
+	constructor(public readonly valor: number) {}
 
-	constructor(
-		public meses: number[],
-		public valor: number
-	) {
+	public abstract readonly type: PeriodoAmortizacao;
 
-	}
+	public abstract appliesTo(mes: number): boolean;
 
-	public static parse(periodo: PeriodoAmortizacao, prazoMeses: number, input: string | undefined, valor: number): Amortizacao {
+	public static create(periodo: PeriodoAmortizacao, prazoMeses: number, input: string | undefined, valor: number): Amortizacao {
 		switch (periodo) {
-			case "Anual":
-				const mesesAnual: number[] = [];
-				for (let i = 12; i <= prazoMeses; i += 12) {
-					mesesAnual.push(i);
-				}
-				return new Amortizacao(mesesAnual, valor);
 			case "Mensal":
-				const mesesMensal: number[] = [];
-				for (let i = 1; i <= prazoMeses; i++) {
-					mesesMensal.push(i);
-				}
-				return new Amortizacao(mesesMensal, valor);
+				return new AmortizacaoMensal(valor);
+			case "Anual":
+				return new AmortizacaoAnual(valor);
 			case "Bienal":
-				const mesesBienal: number[] = [];
-				for (let i = 24; i <= prazoMeses; i += 24) {
-					mesesBienal.push(i);
-				}
-				return new Amortizacao(mesesBienal, valor);
+				return new AmortizacaoBienal(valor);
 			case "Outro":
-				const trimmed = input?.trim() ?? "";
-				if (!trimmed) {
-					throw new Error("Intervalo personalizado é obrigatório para amortizações do tipo 'Outro'");
-				}
-
-				const meses: number[] = [];
-				const parts = trimmed.split(",").map(part => part.trim()).filter(part => part.length > 0);
-				for (const part of parts) {
-					if (part.includes("-")) {
-						const rangeParts = part.split("-").map(rangePart => rangePart.trim());
-						if (rangeParts.length !== 2) {
-							throw new Error(`Intervalo inválido: ${part}`);
-						}
-
-						const start = parseInt(rangeParts[0], 10);
-						const end = parseInt(rangeParts[1], 10);
-						if (isNaN(start) || isNaN(end) || start <= 0 || end <= 0 || start > end) {
-							throw new Error(`Intervalo inválido: ${part}`);
-						}
-
-						for (let i = start; i <= end; i++) {
-							meses.push(i);
-						}
-						continue;
-					}
-
-					const month = parseInt(part, 10);
-					if (isNaN(month) || month <= 0) {
-						throw new Error(`Mês inválido: ${part}`);
-					}
-					meses.push(month);
-				}
-
-				return new Amortizacao(meses, valor);
+				return new AmortizacaoCustom(valor, input, prazoMeses);
 			default:
-				throw new Error(`Período de amortização inválido: ${periodo}`);
+				const exhaustiveCheck: never = periodo;
+				throw new Error(`Período de amortização inválido: ${exhaustiveCheck}`);
 		}
 	}
 
+	public static fromJSON(json: any): Amortizacao {
+		return Amortizacao.create(json.type, json.prazoMeses ?? 0, json.input, json.valor);
+	}
+
+	public static validateCustomInterval(input: string | undefined): void {
+		AmortizacaoCustom.parse(input);
+	}
+}
+
+class AmortizacaoMensal extends Amortizacao {
+	public readonly type = "Mensal";
+	public appliesTo(_mes: number): boolean {
+		return true;
+	}
+}
+
+class AmortizacaoAnual extends Amortizacao {
+	public readonly type = "Anual";
+	public appliesTo(mes: number): boolean {
+		return mes % 12 === 0;
+	}
+}
+
+class AmortizacaoBienal extends Amortizacao {
+	public readonly type = "Bienal";
+	public appliesTo(mes: number): boolean {
+		return mes % 24 === 0;
+	}
+}
+
+class AmortizacaoCustom extends Amortizacao {
+	public readonly type = "Outro";
+	private readonly ranges: Array<{ start: number; end: number }>;
+
+	constructor(valor: number, public readonly input: string | undefined, public readonly prazoMeses: number) {
+		super(valor);
+		this.ranges = AmortizacaoCustom.parse(input);
+	}
+
+	public appliesTo(mes: number): boolean {
+		if (mes > this.prazoMeses) return false;
+
+		for (const range of this.ranges) {
+			if (mes >= range.start && mes <= range.end) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static parse(input: string | undefined): Array<{ start: number; end: number }> {
+		const trimmed = input?.trim();
+		if (!trimmed) {
+			throw new Error("Intervalo personalizado é obrigatório para amortizações do tipo 'Outro'");
+		}
+
+		const ranges: Array<{ start: number; end: number }> = [];
+		const parts = trimmed.split(",");
+
+		for (const part of parts) {
+			const cleanPart = part.trim();
+			if (!cleanPart) continue;
+
+			if (cleanPart.includes("-")) {
+				const [startStr, endStr] = cleanPart.split("-");
+				const start = Number(startStr);
+				const end = Number(endStr);
+
+				// Basic validation: positive integers, start <= end
+				if (!Number.isInteger(start) || !Number.isInteger(end) || start <= 0 || end <= 0 || start > end) {
+					throw new Error(`Intervalo inválido: "${cleanPart}"`);
+				}
+
+				ranges.push({ start, end });
+			} else {
+				const month = Number(cleanPart);
+				if (!Number.isInteger(month) || month <= 0) {
+					throw new Error(`Mês inválido: "${cleanPart}"`);
+				}
+
+				// Unify singles as ranges [x, x]
+				ranges.push({ start: month, end: month });
+			}
+		}
+
+		return ranges;
+	}
 }

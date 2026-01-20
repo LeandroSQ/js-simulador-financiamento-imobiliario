@@ -1,5 +1,5 @@
 import * as bootstrap from "bootstrap";
-import { Amortizacao, PeriodoAmortizacao } from "../amortizacao";
+import { Amortizacao, AmortizacaoCustom, PeriodoAmortizacao } from "../amortizacao";
 import { parseNumericField, validateMaskedNumericField } from "./numeric-field";
 
 export type AmortizacaoModalResult = {
@@ -66,15 +66,9 @@ export class AmortizacaoModalController {
 		const periodo = this.periodoSelect.value as PeriodoAmortizacao;
 		const intervalo = periodo === "Outro" ? this.intervaloInput.value : "";
 		const valor = parseNumericField(this.valorInput, { required: true });
-		if (valor === null || Number.isNaN(valor)) {
-			this.valorInput.reportValidity();
-			return;
-		}
 
-		try {
-			Amortizacao.parse(periodo, intervalo, valor);
-		} catch (error) {
-			this.intervaloInput.reportValidity();
+		if (valor === null || Number.isNaN(valor)) {
+			// Should not happen if button is enabled
 			return;
 		}
 
@@ -90,7 +84,15 @@ export class AmortizacaoModalController {
 		validateMaskedNumericField(this.valorInput);
 
 		const requiresIntervalo = this.periodoSelect.value === "Outro";
-		if (!requiresIntervalo) {
+		if (requiresIntervalo) {
+			try {
+				Amortizacao.validateCustomInterval(this.intervaloInput.value);
+				this.intervaloInput.setCustomValidity("");
+			} catch (e: unknown) {
+				const message = e instanceof Error ? e.message : "Intervalo inválido";
+				this.intervaloInput.setCustomValidity(message);
+			}
+		} else {
 			this.intervaloInput.value = "";
 			this.intervaloInput.setCustomValidity("");
 		}

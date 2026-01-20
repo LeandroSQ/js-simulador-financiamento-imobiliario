@@ -58,7 +58,7 @@ class App {
 		this.ui.setField("taxa-administracao", 25.00);
 		this.ui.setAmortizacoes([
 			// { periodo: "Mensal", valor: 1000.00, intervalo: undefined },
-			{ periodo: "Bienal", valor: FGTS(3600, 24), intervalo: undefined },
+			{ periodo: "Bienal", valor: FGTS(1472, 24), intervalo: undefined },
 		]);
 
 		setTimeout(() => {

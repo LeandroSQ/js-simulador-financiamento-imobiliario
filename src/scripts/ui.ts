@@ -10,6 +10,12 @@ import { FormController, FormNumericField, OnSubmitEventListener } from "./ui/fo
 import { GenericModalController } from "./ui/generic-modal";
 import { SimulacaoResultController } from "./ui/simulacao-result-controller";
 
+const MASK_CONFIG = {
+	money: { precision: 2, separator: ",", delimiter: ".", zeroCents: false },
+	number: { precision: 2, separator: ",", delimiter: ".", zeroCents: false },
+	integer: { precision: 0, separator: ",", delimiter: ".", zeroCents: false }
+} as const;
+
 export class UI {
 	public readonly amortizacoes: Array<Amortizacao> = [];
 
@@ -25,21 +31,16 @@ export class UI {
 
 	constructor() {
 		this.formController = new FormController(this.onSubmitEvent.bind(this));
-		this.formController.setup();
-
 		this.genericModal = new GenericModalController();
 		this.confirmationModal = new ConfirmationModalController();
-
 		this.amortizacoesListController = new AmortizacoesListController(this.confirmationModal);
-
 		this.amortizacaoModalController = new AmortizacaoModalController();
-		this.amortizacaoModalController.setup(result => this.handleAmortizacaoSubmit(result));
-
 		this.colorModeController = new ColorModeController();
-		this.colorModeController.setup();
-
 		this.simulacaoResultController = new SimulacaoResultController();
 
+		this.setupForm();
+		this.setupAmortizacoes();
+		this.setupColorMode();
 		this.setupMask();
 	}
 
@@ -49,9 +50,10 @@ export class UI {
 
 	private onSubmitEvent(valores: ValoresSimulacao) {
 		this.amortizacoes.length = 0;
-		this.amortizacoes.push(...this.amortizacoesListController.getEntries().map(entry =>
-			Amortizacao.parse(entry.periodo, valores.prazoMeses, entry.intervalo, entry.valor)
-		));
+		const parsed = this.amortizacoesListController.getEntries().map(entry =>
+			Amortizacao.create(entry.periodo, valores.prazoMeses, entry.intervalo, entry.valor)
+		);
+		this.amortizacoes.push(...parsed);
 		this.onSubmitEventListener?.call(this, valores);
 	}
 
@@ -83,30 +85,26 @@ export class UI {
 		return this.formController.getValoresSimulacao();
 	}
 
+	private setupForm() {
+		this.formController.setup();
+	}
+
+	private setupAmortizacoes() {
+		this.amortizacoesListController.onChange(() => this.formController.submitIfValid());
+		this.amortizacaoModalController.setup(result => this.handleAmortizacaoSubmit(result));
+	}
+
+	private setupColorMode() {
+		this.colorModeController.setup();
+	}
+
 	private handleAmortizacaoSubmit(result: AmortizacaoModalResult) {
-		this.amortizacoesListController?.addEntry(result);
+		this.amortizacoesListController.addEntry(result);
 	}
 
 	private setupMask() {
-		VMasker(document.querySelectorAll(".mask-money")).maskMoney({
-			precision: 2,
-			separator: ",",
-			delimiter: ".",
-			zeroCents: false
-		});
-
-		VMasker(document.querySelectorAll(".mask-number")).maskMoney({
-			precision: 2,
-			separator: ",",
-			delimiter: ".",
-			zeroCents: false
-		});
-
-		VMasker(document.querySelectorAll(".mask-integer")).maskMoney({
-			precision: 0,
-			separator: ",",
-			delimiter: ".",
-			zeroCents: false
-		});
+		VMasker(document.querySelectorAll(".mask-money")).maskMoney(MASK_CONFIG.money);
+		VMasker(document.querySelectorAll(".mask-number")).maskMoney(MASK_CONFIG.number);
+		VMasker(document.querySelectorAll(".mask-integer")).maskMoney(MASK_CONFIG.integer);
 	}
 }

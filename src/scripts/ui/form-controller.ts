@@ -25,6 +25,11 @@ export class FormController {
 	private readonly selectPrazoPeriodo: HTMLSelectElement;
 	private readonly selectTabela: HTMLSelectElement;
 	private readonly submitButton: HTMLButtonElement;
+	private readonly numericFields: HTMLInputElement[];
+	private readonly formFields: Array<HTMLInputElement | HTMLSelectElement>;
+	private readonly debouncedAutoSubmit: VoidFunction;
+
+	private static readonly AUTO_SUBMIT_DELAY = 350;
 
 	constructor(private readonly onSubmit: OnSubmitEventListener) {
 		this.inputValor = document.getElementByIdOrThrow<HTMLInputElement>("valor");
@@ -40,6 +45,27 @@ export class FormController {
 		this.inputTaxaAdministracaoPeriodo = document.getElementByIdOrThrow<HTMLSelectElement>("taxa-administracao-periodo");
 		this.selectTabela = document.getElementByIdOrThrow<HTMLSelectElement>("tabela");
 		this.submitButton = document.getElementByIdOrThrow<HTMLButtonElement>("submit");
+
+		this.numericFields = [
+			this.inputValor,
+			this.inputEntrada,
+			this.inputJuros,
+			this.inputSeguro,
+			this.inputTaxaAdministracao,
+			this.inputPrazo
+		];
+
+		this.formFields = [
+			...this.numericFields,
+			this.selectJurosPeriodo,
+			this.selectJurosCorrecao,
+			this.selectSeguroPeriodo,
+			this.inputTaxaAdministracaoPeriodo,
+			this.selectPrazoPeriodo,
+			this.selectTabela
+		];
+
+		this.debouncedAutoSubmit = Function.debounce(() => this.submitIfValid(), FormController.AUTO_SUBMIT_DELAY);
 	}
 
 	public setup() {
@@ -74,54 +100,48 @@ export class FormController {
 	}
 
 	public submit() {
-		this.handleSubmit(new Event("submit"));
+		this.trySubmit();
+	}
+
+	public submitIfValid(): boolean {
+		return this.trySubmit();
 	}
 
 	private setupFormListeners() {
 		this.submitButton.addEventListener("click", event => this.handleSubmit(event));
 
-		const fields = [
-			this.inputValor,
-			this.inputEntrada,
-			this.inputJuros,
-			this.selectJurosPeriodo,
-			this.selectJurosCorrecao,
-			this.inputSeguro,
-			this.selectSeguroPeriodo,
-			this.inputPrazo,
-			this.selectPrazoPeriodo,
-			this.selectTabela
-		];
-		for (const field of fields) {
-			field.addEventListener("input", () => window.setTimeout(() => this.validateForm(), 100));
-			field.addEventListener("change", () => window.setTimeout(() => this.validateForm(), 100));
+		const handleFieldInteraction = () => {
+			if (this.validateForm()) {
+				this.debouncedAutoSubmit();
+			}
+		};
+
+		for (const field of this.formFields) {
+			field.addEventListener("input", handleFieldInteraction);
+			field.addEventListener("change", handleFieldInteraction);
 		}
 	}
 
-	private validateForm() {
-		validateMaskedNumericField(this.inputValor);
-		validateMaskedNumericField(this.inputEntrada);
-		validateMaskedNumericField(this.inputJuros);
-		validateMaskedNumericField(this.inputSeguro);
-		validateMaskedNumericField(this.inputPrazo);
+	private validateForm(): boolean {
+		this.numericFields.forEach(validateMaskedNumericField);
+		this.numericFields.forEach(field => field.reportValidity());
 
-		this.inputValor.reportValidity();
-		this.inputEntrada.reportValidity();
-		this.inputJuros.reportValidity();
-		this.inputSeguro.reportValidity();
-		this.inputPrazo.reportValidity();
-
-		if (this.inputValor.checkValidity() && this.inputEntrada.checkValidity() && this.inputJuros.checkValidity() && this.inputSeguro.checkValidity() && this.inputPrazo.checkValidity()) {
-			this.submitButton.removeAttribute("disabled");
-		} else {
-			this.submitButton.setAttribute("disabled", "disabled");
-		}
+		const isValid = this.formFields.every(field => field.checkValidity());
+		this.submitButton.toggleAttribute("disabled", !isValid);
+		return isValid;
 	}
 
 	private handleSubmit(event: Event) {
 		event.preventDefault();
+		this.trySubmit();
+	}
+
+	private trySubmit(): boolean {
+		const isValid = this.validateForm();
+		if (!isValid) return false;
 
 		this.onSubmit(this.collectValoresSimulacao());
+		return true;
 	}
 
 	public getValoresSimulacao(): ValoresSimulacao {

@@ -87,7 +87,7 @@ export class SimuladorFinanciamento {
 
 			// Define a amortização do mês (até o saldo devedor)
 			const amortizacaoExtraordinariaMes = this.amortizacoesExtraordinarias
-				.filter(a => a.meses.includes(mes))
+				.filter(a => a.appliesTo(mes))
 				.reduce((sum, a) => sum + a.valor, 0);
 			const amortizacaoMes = Math.min(amortizacaoFixa + amortizacaoExtraordinariaMes, saldoDevedor);
 			totalAmortizado += amortizacaoMes;
