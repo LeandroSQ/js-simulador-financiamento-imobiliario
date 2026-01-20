@@ -1,0 +1,7 @@
+# Treat font files as binary to avoid corruption on GitHub Pages
+*.woff2 binary
+*.woff binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.svg binary
