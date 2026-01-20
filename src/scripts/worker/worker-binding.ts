@@ -24,7 +24,7 @@ export class WorkerBinding {
 
 			const serialized = JSON.stringify({
 				valores,
-				amortizacoes 
+				amortizacoes
 			});
 			this.worker.postMessage(serialized);
 		});

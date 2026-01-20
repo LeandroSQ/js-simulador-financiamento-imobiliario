@@ -111,7 +111,7 @@ export class AmortizacaoCustom extends Amortizacao {
 
 				ranges.push({
 					start,
-					end 
+					end
 				});
 			} else {
 				const month = Number(cleanPart);
@@ -122,7 +122,7 @@ export class AmortizacaoCustom extends Amortizacao {
 				// Unify singles as ranges [x, x]
 				ranges.push({
 					start: month,
-					end: month 
+					end: month
 				});
 			}
 		}

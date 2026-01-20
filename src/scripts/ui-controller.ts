@@ -3,13 +3,13 @@ import { Amortizacao } from "./models/amortizacao";
 import { Resultado } from "./types/resultado";
 import { ValoresSimulacao } from "./types/valores-simulacao";
 import { AmortizacaoModalController } from "./ui/amortizacao-modal-controller";
-import { AmortizacaoModalResult } from "./ui/types";
 import { AmortizacoesListController } from "./ui/amortizacoes-list-controller";
 import { ColorModeController } from "./ui/color-mode-controller";
 import { ConfirmationModalController } from "./ui/confirmation-modal-controller";
-import { FormController, FormNumericField, OnSubmitEventListener } from "./ui/form-controller";
 import { GenericModalController } from "./ui/generic-modal-controller";
 import { SimulacaoResultController } from "./ui/simulacao-result-controller";
+import { FormNumericField, AmortizacaoModalResult } from "./types";
+import { FormController, OnSubmitEventListener } from "./ui/form-controller";
 
 const MASK_CONFIG = {
 	money: { precision: 2, separator: ",", delimiter: ".", zeroCents: false },

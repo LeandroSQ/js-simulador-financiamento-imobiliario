@@ -72,7 +72,7 @@ export class AmortizacaoModalController {
 			this.submitHandler({
 				periodo,
 				intervalo,
-				valor 
+				valor
 			});
 		}
 

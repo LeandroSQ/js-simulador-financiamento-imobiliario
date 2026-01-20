@@ -1,6 +1,6 @@
-import { SimuladorFinanciamento } from "../core/simulador-financiamento";
-import { Amortizacao } from "../models/amortizacao";
-import { WorkerRequest } from "../types";
+import { SimuladorFinanciamento } from "./core/simulador-financiamento";
+import { Amortizacao } from "./models/amortizacao";
+import { WorkerRequest } from "./types";
 
 self.onmessage = (event: MessageEvent) => {
 	try {

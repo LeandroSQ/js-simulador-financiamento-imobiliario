@@ -46,7 +46,7 @@ export class AmortizacoesListController {
 		periodoElement.textContent = data.periodo === "Outro" ? (data.intervalo ?? "") : data.periodo;
 		valorElement.textContent = data.valor.toLocaleString("pt-BR", {
 			style: "currency",
-			currency: "BRL" 
+			currency: "BRL"
 		});
 
 		deleteButton.addEventListener("click", event => {
@@ -74,7 +74,7 @@ export class AmortizacoesListController {
 		this.container.appendChild(fragment);
 		this.entries.push({
 			data,
-			element 
+			element
 		});
 		console.log(this.entries, this.changeHandler);
 		this.emptyState.style.display = "none";

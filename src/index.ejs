@@ -14,10 +14,14 @@
     <body class="min-vh-100 d-flex flex-column">
 		<%- include("./views/header.ejs") %>
 
-		<%- include("./views/form.ejs") %>
+		<div class="container py-4 px-md-3 mx-auto">
+			<div class="mb-5 mx-auto max-width-md-75">
+				<%- include("./views/form.ejs") %>
 
-		<%- include("./views/simulation.ejs") %>
-
+				<%- include("./views/simulation.ejs") %>
+			</div>
+		</div>
+		
 		<div class="flex-grow-1"></div>
 
 		<%- include("./views/footer.ejs") %>

@@ -1,141 +1,139 @@
-<div class="container py-4 px-md-3 mx-auto">
-	<form id="form" class="mb-5 mx-auto max-width-md-75">
-		<h4 class="mb-4">Preencha os campos abaixo</h4>
+<form id="form" class="mb-5">
+	<h4 class="mb-4">Preencha os campos abaixo</h4>
 
-		<div class="row g-3">
-			<div class="col-12 col-lg-6">
-				<div class="input-group">
-					<span class="input-group-text">&nbsp;R$</span>
-					<div class="form-floating">
-						<input type="text" class="form-control mask-money" id="valor" placeholder="" min="3000" max="10000000" step="5000" required>
-						<label for="valor">Valor do imóvel</label>
-					</div>
+	<div class="row g-3">
+		<div class="col-12 col-lg-6">
+			<div class="input-group">
+				<span class="input-group-text">&nbsp;R$</span>
+				<div class="form-floating">
+					<input type="text" class="form-control mask-money" id="valor" placeholder="" min="3000" max="10000000" step="5000" required>
+					<label for="valor">Valor do imóvel</label>
 				</div>
-			</div>
-
-			<div class="col-12 col-lg-6">
-				<div class="input-group">
-					<span class="input-group-text">&nbsp;R$</span>
-					<div class="form-floating">
-						<input type="text" class="form-control mask-money" id="entrada" placeholder="" min="0" max="10000000" step="5000" required>
-						<label for="entrada">Valor de entrada</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12 col-lg-8">
-				<div class="input-group">
-					<span class="input-group-text">
-						<i class="las la-percent fs-3"></i>
-					</span>
-					<div class="form-floating flex-grow-1">
-						<input type="text" class="form-control mask-number" id="juros" placeholder="" step="0.01" min="0" max="100" required>
-						<label for="juros">Taxa de juros</label>
-					</div>
-					<div class="form-floating flex-grow-0 w-18">
-						<select class="form-select form-select-sm bg-body-tertiary" id="juros-periodo" aria-label="Período">
-							<option value="Anual" selected>Anual</option>
-							<option value="Mensal">Mensal</option>
-						</select>
-						<label for="juros-periodo">Período</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12 col-lg-4">
-				<div class="input-group">
-					<span class="input-group-text">
-						<i class="las la-info fs-3"></i>
-					</span>
-					<div class="form-floating">
-						<select class="form-select" id="juros-correcao" aria-label="Período">
-							<option value="pre" selected>Pré-fixado</option>
-							<option value="pos" disabled>Pós-fixado</option>
-						</select>
-						<label for="juros-correcao">Correção de juros</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12 col-lg-6">
-				<div class="input-group">
-					<span class="input-group-text">&nbsp;R$</span>
-
-					<div class="form-floating flex-grow-1">
-						<input type="text" class="form-control mask-money" id="seguro" placeholder="" min="0" max="10000000" step="5000">
-						<label for="seguro">Seguro</label>
-					</div>
-
-					<div class="form-floating flex-grow-0 w-18">
-						<select class="form-select form-select-sm bg-body-tertiary" id="seguro-periodo" aria-label="Período" required>
-							<option value="Anual">Anual</option>
-							<option value="Mensal" selected>Mensal</option>
-						</select>
-						<label for="seguro-periodo">Período</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12 col-lg-6">
-				<div class="input-group">
-					<span class="input-group-text">&nbsp;R$</span>
-
-					<div class="form-floating flex-grow-1">
-						<input type="text" class="form-control mask-money" id="taxa-administracao" placeholder="" min="0" max="10000000" step="5000">
-						<label for="taxa-administracao">Taxa administração</label>
-					</div>
-
-					<div class="form-floating flex-grow-0 w-18">
-						<select class="form-select form-select-sm bg-body-tertiary" id="taxa-administracao-periodo" aria-label="Período" required>
-							<option value="Anual">Anual</option>
-							<option value="Mensal" selected>Mensal</option>
-						</select>
-						<label for="taxa-administracao-periodo">Período</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12 col-lg-6">
-				<div class="input-group">
-					<span class="input-group-text">
-						<i class="las la-calendar-day fs-3"></i>
-					</span>
-
-					<div class="form-floating flex-grow-1">
-						<input type="text" class="form-control mask-integer" id="prazo" placeholder="" step="1" min="1" max="1000" required>
-						<label for="prazo">Prazo</label>
-					</div>
-
-					<div class="form-floating flex-grow-0 w-18">
-						<select class="form-select form-select-sm bg-body-tertiary" id="prazo-periodo" aria-label="Período" required>
-							<option value="Anos" selected>Anos</option>
-							<option value="Meses">Meses</option>
-						</select>
-						<label for="seguro-periodo">Período</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12 col-lg-6">
-				<div class="input-group">
-					<span class="input-group-text">
-						<i class="las la-file-invoice-dollar fs-3"></i>
-					</span>
-					<div class="form-floating">
-						<select class="form-select" id="tabela" aria-label="Tabela" required>
-							<option value="sac" selected>SAC</option>
-							<option value="price" disabled>PRICE</option>
-						</select>
-						<label for="tabela">Tabela</label>
-					</div>
-				</div>
-			</div>
-
-			<%- include("./amortizacoes-list.ejs") %>
-
-			<div class="col-12 mt-4 justify-content-center d-flex">
-				<button id="submit" type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 max-width-md-25" disabled>Calcular</button>
 			</div>
 		</div>
-	</form>
-</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="input-group">
+				<span class="input-group-text">&nbsp;R$</span>
+				<div class="form-floating">
+					<input type="text" class="form-control mask-money" id="entrada" placeholder="" min="0" max="10000000" step="5000" required>
+					<label for="entrada">Valor de entrada</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-8">
+			<div class="input-group">
+				<span class="input-group-text">
+					<i class="las la-percent fs-3"></i>
+				</span>
+				<div class="form-floating flex-grow-1">
+					<input type="text" class="form-control mask-number" id="juros" placeholder="" step="0.01" min="0" max="100" required>
+					<label for="juros">Taxa de juros</label>
+				</div>
+				<div class="form-floating flex-grow-0 w-18">
+					<select class="form-select form-select-sm bg-body-tertiary" id="juros-periodo" aria-label="Período">
+						<option value="Anual" selected>Anual</option>
+						<option value="Mensal">Mensal</option>
+					</select>
+					<label for="juros-periodo">Período</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-4">
+			<div class="input-group">
+				<span class="input-group-text">
+					<i class="las la-info fs-3"></i>
+				</span>
+				<div class="form-floating">
+					<select class="form-select" id="juros-correcao" aria-label="Período">
+						<option value="pre" selected>Pré-fixado</option>
+						<option value="pos" disabled>Pós-fixado</option>
+					</select>
+					<label for="juros-correcao">Correção de juros</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="input-group">
+				<span class="input-group-text">&nbsp;R$</span>
+
+				<div class="form-floating flex-grow-1">
+					<input type="text" class="form-control mask-money" id="seguro" placeholder="" min="0" max="10000000" step="5000">
+					<label for="seguro">Seguro</label>
+				</div>
+
+				<div class="form-floating flex-grow-0 w-18">
+					<select class="form-select form-select-sm bg-body-tertiary" id="seguro-periodo" aria-label="Período" required>
+						<option value="Anual">Anual</option>
+						<option value="Mensal" selected>Mensal</option>
+					</select>
+					<label for="seguro-periodo">Período</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="input-group">
+				<span class="input-group-text">&nbsp;R$</span>
+
+				<div class="form-floating flex-grow-1">
+					<input type="text" class="form-control mask-money" id="taxa-administracao" placeholder="" min="0" max="10000000" step="5000">
+					<label for="taxa-administracao">Taxa administração</label>
+				</div>
+
+				<div class="form-floating flex-grow-0 w-18">
+					<select class="form-select form-select-sm bg-body-tertiary" id="taxa-administracao-periodo" aria-label="Período" required>
+						<option value="Anual">Anual</option>
+						<option value="Mensal" selected>Mensal</option>
+					</select>
+					<label for="taxa-administracao-periodo">Período</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="input-group">
+				<span class="input-group-text">
+					<i class="las la-calendar-day fs-3"></i>
+				</span>
+
+				<div class="form-floating flex-grow-1">
+					<input type="text" class="form-control mask-integer" id="prazo" placeholder="" step="1" min="1" max="1000" required>
+					<label for="prazo">Prazo</label>
+				</div>
+
+				<div class="form-floating flex-grow-0 w-18">
+					<select class="form-select form-select-sm bg-body-tertiary" id="prazo-periodo" aria-label="Período" required>
+						<option value="Anos" selected>Anos</option>
+						<option value="Meses">Meses</option>
+					</select>
+					<label for="seguro-periodo">Período</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-6">
+			<div class="input-group">
+				<span class="input-group-text">
+					<i class="las la-file-invoice-dollar fs-3"></i>
+				</span>
+				<div class="form-floating">
+					<select class="form-select" id="tabela" aria-label="Tabela" required>
+						<option value="sac" selected>SAC</option>
+						<option value="price" disabled>PRICE</option>
+					</select>
+					<label for="tabela">Tabela</label>
+				</div>
+			</div>
+		</div>
+
+		<%- include("./amortizacoes-list.ejs") %>
+
+		<div class="col-12 mt-4 justify-content-center d-flex">
+			<button id="submit" type="submit" class="btn btn-primary flex-grow-1 flex-md-grow-0 max-width-md-25" disabled>Calcular</button>
+		</div>
+	</div>
+</form>
