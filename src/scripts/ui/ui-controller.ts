@@ -121,6 +121,9 @@ export class UIController {
 	}
 
 	private setupColorMode() {
+		this.colorModeController.onChange(() => {
+			this.simulacaoResultController.onColorModeChange();
+		});
 		this.colorModeController.setup();
 	}
 

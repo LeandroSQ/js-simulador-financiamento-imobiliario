@@ -1,5 +1,6 @@
-import { ChartsController } from './charts-controller';
 import { Resultado } from "../types/resultado";
+
+import { ChartsController } from "./charts-controller";
 
 export class SimulacaoResultController {
 
@@ -90,6 +91,10 @@ export class SimulacaoResultController {
 			throw new Error(`Elemento '${selector}' não encontrado no template`);
 		}
 		element.textContent = value;
+	}
+
+	public onColorModeChange() {
+		this.chartsController.onColorModeChange();
 	}
 
 }

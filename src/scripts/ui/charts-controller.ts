@@ -1,8 +1,11 @@
 import { Resultado } from "../types/resultado";
-import { PieChart } from "./pie-chart";
+
+import { PieChart } from "./charts/pie-chart";
 
 // Get monitor pixel ratio
 export class ChartsController {
+
+	private chart1: PieChart | null = null;
 
 	public render(resultado: Resultado) {
 		this.renderChart1(resultado);
@@ -40,7 +43,12 @@ export class ChartsController {
 		];
 		// Let's throw an Easter egg here, the colors are actually from the RS flag :)
 
-		const pieChart = new PieChart(canvas, ctx, slices);
+		if (this.chart1 === null) {
+			this.chart1 = new PieChart(canvas, ctx, slices);
+		} else {
+			this.chart1.entries = slices;
+			this.chart1.invalidate();
+		}
 	}
 
 	private renderChart2(resultado: Resultado) {
@@ -56,6 +64,10 @@ export class ChartsController {
 			canvas,
 			ctx
 		};
+	}
+
+	public onColorModeChange() {
+		this.chart1?.invalidate();
 	}
 
 }
