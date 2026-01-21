@@ -84,11 +84,13 @@ const baseRules = {
 	"quote-props": ["warn", "as-needed"],
 	"@stylistic/padded-blocks": ["warn", { classes: "always" }],
 	"@typescript-eslint/no-unsafe-enum-comparison": ["off"],
-	"@stylistic/array-element-newline": ["error", "always"],
-	"@stylistic/object-property-newline": [
-		"error",
-		{ allowAllPropertiesOnSameLine: false },
-	],
+	"@stylistic/array-element-newline": ["error", {
+		ArrayExpression: "consistent",
+		ArrayPattern: { minItems: 3 },
+	}],
+	"@stylistic/object-property-newline": ["error", {
+		allowAllPropertiesOnSameLine: false,
+	}],
 	"@stylistic/array-bracket-newline": ["error", { multiline: true }],
 	"@stylistic/object-curly-newline": ["error", { multiline: true }],
 	"@stylistic/padding-line-between-statements": [
