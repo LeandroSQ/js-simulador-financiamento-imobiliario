@@ -57,11 +57,9 @@ class App {
 		this.ui.setField("seguro", 43.00);
 		this.ui.setField("taxa-administracao", 25.00);
 		this.ui.setAmortizacoes([
-			{
-				periodo: "Mensal",
-				valor: 1000,
-				intervalo: "",
-			}
+			{ periodo: "Mensal", valor: 1000, intervalo: "" },
+			{ periodo: "Anual", valor: 10_000, intervalo: "" },
+			{ periodo: "Bienal", valor: 35_000, intervalo: "" }
 		]);
 
 		setTimeout(() => {

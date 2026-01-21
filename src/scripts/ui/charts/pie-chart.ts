@@ -10,12 +10,14 @@ export interface PieSlice {
 // Akctually it's a doughnut chart but who really cares
 export class PieChart extends BaseChart<PieSlice> {
 
-	private static readonly BOTTOM_MARGIN = 40; // in pixels
-	private static readonly PADDING = 40; // in pixels
+	// Layout constants (in pixels)
+	private static readonly BOTTOM_MARGIN = 40;
+	private static readonly PADDING = 40;
 	private static readonly SELECTED_SLICE_SCALE_MULTIPLIER = 0.1;
 	private static readonly FONT_SIZE = 12;
 	private static readonly FONT_LINE_HEIGHT = 10;
 	private static readonly BIG_FONT_SIZE = 16;
+
 	private cachedFontHeight = -1;
 
 	private center = {
@@ -24,9 +26,17 @@ export class PieChart extends BaseChart<PieSlice> {
 	};
 	private radius: number = 0;
 
+	/** Sum of all slice values - used for calculating percentages */
+	protected get total(): number {
+		return this.entries.reduce((sum, entry) => sum + entry.value, 0);
+	}
+
 	constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, entries: PieSlice[]) {
 		super(canvas, ctx, entries);
 		this.init();
+
+		// Setup animation progress
+		this.animationProgress = new Array(this.entries.length).fill(0.0);
 	}
 
 	private get legendStartY(): number {
@@ -65,7 +75,7 @@ export class PieChart extends BaseChart<PieSlice> {
 					this.lastAnimationTime = -1; // Clear up the last animation time to avoid large delta
 					this.invalidate();
 				}
-				
+
 				return;
 			}
 		}

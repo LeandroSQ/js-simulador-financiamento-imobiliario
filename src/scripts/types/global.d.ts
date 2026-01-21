@@ -10,6 +10,7 @@ declare global {
 
 	interface Number {
 		toCurrencyString(locale?: string, options?: Intl.NumberFormatOptions): string;
+		toShortCurrencyString(): string;
 	}
 
 	var DEBUG: boolean;

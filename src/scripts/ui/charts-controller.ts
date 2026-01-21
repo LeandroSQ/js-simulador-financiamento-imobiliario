@@ -1,11 +1,14 @@
 import { Resultado } from "../types/resultado";
 
+import { LineChart, LineSeries } from "./charts/line-chart";
+import { LineChartV1 } from "./charts/line-chart-v1";
 import { PieChart } from "./charts/pie-chart";
 
 // Get monitor pixel ratio
 export class ChartsController {
 
 	private chart1: PieChart | null = null;
+	private chart2: LineChart | null = null;
 
 	public render(resultado: Resultado) {
 		this.renderChart1(resultado);
@@ -53,6 +56,51 @@ export class ChartsController {
 
 	private renderChart2(resultado: Resultado) {
 		const { canvas, ctx } = this.setupChart("simulacao-chart2");
+
+		// Line chart showing evolution over time
+		// Series: Saldo Devedor, Prestação, Amortização, Juros
+		const series: LineSeries[] = [
+			{
+				label: "Saldo Devedor",
+				color: document.getVar("--bs-primary-rgb"),
+				data: resultado.evolucao.map((mes, index) => ({
+					x: index + 1,
+					y: mes.saldoDevedor
+				}))
+			},
+			{
+				label: "Prestação",
+				color: document.getVar("--bs-success-rgb"),
+				data: resultado.evolucao.map((mes, index) => ({
+					x: index + 1,
+					y: mes.valorParcela
+				}))
+			},
+			{
+				label: "Amortização",
+				color: document.getVar("--bs-info-rgb"),
+				data: resultado.evolucao.map((mes, index) => ({
+					x: index + 1,
+					y: mes.valorAmortizacao
+				}))
+			},
+			{
+				label: "Juros",
+				color: document.getVar("--bs-warning-rgb"),
+				data: resultado.evolucao.map((mes, index) => ({
+					x: index + 1,
+					y: mes.valorJuros
+				}))
+			}
+		];
+
+		if (this.chart2 === null) {
+			this.chart2 = new LineChart(canvas, ctx, series);
+		} else {
+			this.chart2.entries = series;
+			this.chart2.layout(); // Line chart needs to recalculate data bounds
+			this.chart2.invalidate();
+		}
 	}
 
 	private setupChart(id: string): { canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D; } {
@@ -68,6 +116,7 @@ export class ChartsController {
 
 	public onColorModeChange() {
 		this.chart1?.invalidate();
+		this.chart2?.invalidate();
 	}
 
 }

@@ -1,10 +1,10 @@
-export abstract class BaseChart<T extends { value: number }> {
+export abstract class BaseChart<T> {
 
 	protected static readonly ANIMATION_SPEED = 10.0;
 	protected static readonly ANIMATION_DECAY_MULTIPLIER = 0.25;
 	protected cachedFontFamily: string = "sans-serif";
 
-	// Stores animation progress for each slice (0.0 to 1.0)
+	// Stores animation progress for each entry (0.0 to 1.0)
 	protected animationProgress: number[];
 
 	protected selectedIndex: number = -1;
@@ -18,8 +18,6 @@ export abstract class BaseChart<T extends { value: number }> {
 		protected ctx: CanvasRenderingContext2D,
 		public entries: T[]
 	) {
-		// Setup animation progress
-		this.animationProgress = new Array(this.entries.length).fill(0.0);
 	}
 
 	protected init(): void {
@@ -27,10 +25,6 @@ export abstract class BaseChart<T extends { value: number }> {
 		this.attachHooks();
 		this.layout();
 		this.invalidate();
-	}
-
-	protected get total(): number {
-		return this.entries.reduce((sum, entry) => sum + entry.value, 0);
 	}
 
 	protected setup(): void {

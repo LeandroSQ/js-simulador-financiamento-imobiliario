@@ -387,7 +387,7 @@ export class LineChart extends BaseChart<LineSeries> {
 
 			this.ctx.save();
 
-			if (this.hoveredPoint && this.hoveredPoint.seriesIndex === i) {
+			if (this.hoveredPoint?.seriesIndex === i) {
 				this.ctx.translate(0, -2);
 			}
 
