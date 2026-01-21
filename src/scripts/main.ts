@@ -1,4 +1,5 @@
 import "./utils/extensions";
+import { Amortizacao } from "./amortizacao";
 import { Selic } from "./services/selic";
 import { TR } from "./services/tr";
 import { ValoresSimulacao } from "./types/valores-simulacao";
@@ -49,13 +50,19 @@ class App {
 	private setupInitialValues() {
 		if (!DEBUG) return;
 
-		this.ui.setField("valor", 600_000);
-		this.ui.setField("entrada", 200_000);
+		this.ui.setField("valor", 350_000);
+		this.ui.setField("entrada", 180_000);
 		this.ui.setField("prazo", 35);
-		this.ui.setField("juros", 14.29);
-		this.ui.setField("seguro", 46.00);
-		this.ui.setField("taxa-administracao", 30.00);
-		this.ui.setAmortizacoes([]);
+		this.ui.setField("juros", 11.29);
+		this.ui.setField("seguro", 43.00);
+		this.ui.setField("taxa-administracao", 25.00);
+		this.ui.setAmortizacoes([
+			{
+				periodo: "Mensal",
+				valor: 1000,
+				intervalo: "",
+			}
+		]);
 
 		setTimeout(() => {
 			this.ui.submit();

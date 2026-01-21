@@ -1,4 +1,5 @@
 <div id="simulacao-results">
+	<!-- Overview section -->
 	<div class="card shadow-lg border-0 mb-4">
 		<div class="card-header border-bottom-0 bg-body-tertiary p-3">
 			<div class="d-flex align-items-center gap-2">
@@ -101,6 +102,26 @@
 							<div class="fs-5 fw-bold text-dark-emphasis" data-simulacao-field="quantidade-parcelas">0</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Charts section -->
+	<div class="card shadow-lg border-0 mb-4">
+		<div class="card-header border-bottom-0 bg-body-tertiary p-3">
+			<div class="d-flex align-items-center gap-2">
+				<i class="las la-poll text-primary fs-4"></i>
+				<h5 class="mb-0 text-primary">Resultado da Simulação</h5>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row g-3">
+				<div class="col-12 col-lg-6">
+					<canvas id="simulacao-chart1" class="border rounded-3"></canvas>
+				</div>
+				<div class="col-12 col-lg-6">
+					<canvas id="simulacao-chart2" class="border rounded-3"></canvas>
 				</div>
 			</div>
 		</div>

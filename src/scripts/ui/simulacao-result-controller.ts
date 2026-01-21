@@ -1,3 +1,4 @@
+import { ChartsController } from './charts-controller';
 import { Resultado } from "../types/resultado";
 
 export class SimulacaoResultController {
@@ -14,6 +15,8 @@ export class SimulacaoResultController {
 	private readonly parcelaFinalElement: HTMLElement;
 	private readonly quantidadeParcelasElement: HTMLElement;
 
+	private readonly chartsController: ChartsController;
+
 	constructor() {
 		this.container = document.getElementByIdOrThrow("simulacao-results");
 		this.template = this.container.querySelector<HTMLTemplateElement>("#simulacao-parcela-template") ?? (() => { throw new Error("Template de parcela não encontrado"); })();
@@ -26,6 +29,8 @@ export class SimulacaoResultController {
 		this.parcelaInicialElement = this.getField("parcela-inicial");
 		this.parcelaFinalElement = this.getField("parcela-final");
 		this.quantidadeParcelasElement = this.getField("quantidade-parcelas");
+
+		this.chartsController = new ChartsController();
 	}
 
 	public render(resultado: Resultado) {
@@ -41,6 +46,8 @@ export class SimulacaoResultController {
 
 		this.renderTabela(resultado.evolucao);
 		this.container.classList.add("active");
+
+		this.chartsController.render(resultado);
 	}
 
 	private renderTabela(evolucao: Resultado["evolucao"]) {

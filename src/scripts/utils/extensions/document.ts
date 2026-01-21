@@ -3,6 +3,8 @@
 declare global {
 	interface Document {
 		getElementByIdOrThrow<T extends HTMLElement = HTMLElement>(id: string): T;
+		getVar(varName: string): string;
+		get devicePixelRatio(): number;
 	}
 }
 
@@ -14,4 +16,18 @@ document.getElementByIdOrThrow = function <T extends HTMLElement = HTMLElement>(
 		throw new Error(`Elemento '${id}' não encontrado`);
 	}
 	return element;
+};
+
+Object.defineProperty(document, "devicePixelRatio", {
+	get() {
+		return window.devicePixelRatio || 1;
+	},
+});
+
+document.getVar = (varName: string): string => {
+	const styles = getComputedStyle(document.documentElement);
+	const value = styles.getPropertyValue(varName).trim();
+
+	if (value.startsWith("#") || value.startsWith("rgb")) return value;
+	return `rgb(${value})`;
 };

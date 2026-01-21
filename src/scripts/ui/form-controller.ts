@@ -160,7 +160,9 @@ export class FormController {
 		const prazoPeriodoValor = this.selectPrazoPeriodo.value as PeriodoPrazo;
 		const tabelaValue = this.selectTabela.value as Tabela;
 
-		const taxaJurosAnual = taxaJurosBruta / (taxaJurosPeriodo === "Anual" ? 1 : 12);
+		const taxaJurosAnual = taxaJurosPeriodo === "Anual"
+			? taxaJurosBruta
+			: (Math.pow(1 + taxaJurosBruta / 100, 12) - 1) * 100;
 		const prazoMeses = prazoBruto * (prazoPeriodoValor === "Anos" ? 12 : 1);
 		const taxaAdministracaoMensal = taxaAdministracaoBruta / (taxaAdministracaoPeriodoValor === "Anual" ? 12 : 1);
 		const seguroMensal = seguroBruto / (seguroPeriodoValor === "Anual" ? 12 : 1);
