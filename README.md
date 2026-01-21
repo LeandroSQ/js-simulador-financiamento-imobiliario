@@ -24,6 +24,8 @@ During development, calculations were validated against real examples to keep re
 
 Current scope: fixed-rate simulations using SAC.
 
+I initially did this for personal use, but then it grew into a fun challenge to build a small web app the spartan way, ended up doing a automated mockup tool just for the screenshots above. But it can be useful for others too, so here it is.
+
 ## Features
 
 - [x] SAC (Sistema de Amortização Constante / Constant Amortization)
@@ -35,7 +37,7 @@ Current scope: fixed-rate simulations using SAC.
 - [x] Unit tests
 - [ ] PRICE (French amortization)
 - [ ] Variable interest rate
-- [ ] Charts
+- [x] Charts
 - [ ] Export to PDF/CSV
 
 ## Tech stack

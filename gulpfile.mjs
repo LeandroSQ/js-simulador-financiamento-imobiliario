@@ -1,19 +1,22 @@
 /* eslint-env node */
-import gulp from "gulp";
-const { src, dest, series, parallel, watch, symlink } = gulp;
 import browserSync from "browser-sync";
-import htmlMinify from "gulp-htmlmin";
-import sourcemaps from "gulp-sourcemaps";
-import * as dartSass from "sass";
-import gulpSass from "gulp-sass";
-const sass = gulpSass(dartSass);
+import { deleteAsync } from "del";
+import gulp from "gulp";
 import cssAutoPrefixer from "gulp-autoprefixer";
 import concat from "gulp-concat";
-import { deleteAsync } from "del";
-import { buildPipe as gulpEsbuild } from "./build/esbuild.mjs";
-import { isArgumentPassed } from "./build/utils/argparser.mjs";
 import ejs from "gulp-ejs";
+import htmlMinify from "gulp-htmlmin";
 import rename from "gulp-rename";
+import gulpSass from "gulp-sass";
+import sourcemaps from "gulp-sourcemaps";
+import * as dartSass from "sass";
+
+import { buildPipe as gulpEsbuild } from "./build/esbuild.mjs";
+import { takeScreenshots } from "./build/screenshots.mjs";
+import { isArgumentPassed } from "./build/utils/argparser.mjs";
+
+const { src, dest, series, parallel, watch, symlink } = gulp;
+const sass = gulpSass(dartSass);
 
 // Env
 const isProduction = isArgumentPassed("production", "prod");
@@ -44,6 +47,8 @@ const cssOptions = {
 	sourceMap: false,
 };
 
+
+
 // Tasks
 function reloadBrowsers() {
 	return browserSync.reload({ stream: true });
@@ -59,9 +64,9 @@ function initializeBrowserSync() {
 
 function handleHtml() {
 	return src(["src/**/*.ejs", "!src/views/**/_*.ejs"])
-		.pipe(ejs({}).on('error', (err) => {
+		.pipe(ejs({}).on("error", (err) => {
 			console.error(err);
-			this.emit('end');
+			this.emit("end");
 		}))
 		.pipe(htmlMinify(htmlOptions))
 		.pipe(rename({ extname: ".html" })) // Correctly rename to .html
@@ -87,10 +92,10 @@ function watchTs() {
 function handleBootstrapIcons() {
 	if (isProduction) {
 		return src("node_modules/line-awesome/dist/line-awesome/fonts/**/*.*")
-			.pipe(dest("./dist/assets/fonts"))
+			.pipe(dest("./dist/assets/fonts"));
 	} else {
 		return src("node_modules/line-awesome/dist/line-awesome/fonts/**/*.*")
-			.pipe(symlink("./dist/assets/fonts", { force: true }))
+			.pipe(symlink("./dist/assets/fonts", { force: true }));
 	}
 }
 
@@ -127,6 +132,7 @@ export const ts = handleTs;
 export const scss = handleSCSS;
 export const clean = cleanDistDir;
 export const build = series(clean, parallel(assets, scss, html, ts));
+export const screenshots = series(build, takeScreenshots);
 export const dev = series(clean,
 	parallel(
 		initializeBrowserSync,
