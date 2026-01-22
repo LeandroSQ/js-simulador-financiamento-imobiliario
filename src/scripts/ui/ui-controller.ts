@@ -1,18 +1,21 @@
 import VMasker from "vanilla-masker";
 
 import { Amortizacao } from "../models/amortizacao";
-import { AmortizacaoModalResult, FormNumericField } from "../types";
-import { Resultado } from "../types/resultado";
-import { ValoresSimulacao } from "../types/valores-simulacao";
+import {
+	ExtraAmortizationInput,
+	FormNumericField,
+	SimulationInput,
+	SimulationResult
+} from "../types";
 
 import { AmortizacaoModalController } from "./amortizacao-modal-controller";
 import { AmortizacoesListController } from "./amortizacoes-list-controller";
 import { ColorModeController } from "./color-mode-controller";
 import { ConfirmationModalController } from "./confirmation-modal-controller";
 import { FormController, OnSubmitEventListener } from "./form-controller";
-import { GenericModalController } from "./generic-modal-controller";
+import { AlertModalController } from "./generic-modal-controller";
 import { SimulacaoResultController } from "./simulacao-result-controller";
-import { TaxasResultController } from "./taxas-result-controller";
+import { RatesDisplayController } from "./taxas-result-controller";
 
 const MASK_CONFIG = {
 	money: {
@@ -40,25 +43,25 @@ export class UIController {
 	public readonly amortizacoes: Amortizacao[] = [];
 
 	private formController: FormController;
-	private genericModal: GenericModalController;
+	private alertModal: AlertModalController;
 	private confirmationModal: ConfirmationModalController;
 	private amortizacaoModalController: AmortizacaoModalController;
 	private amortizacoesListController: AmortizacoesListController;
 	private colorModeController: ColorModeController;
 	private simulacaoResultController: SimulacaoResultController;
-	private taxasResultController: TaxasResultController;
+	private ratesDisplayController: RatesDisplayController;
 
 	private onSubmitEventListener?: OnSubmitEventListener = undefined;
 
 	constructor() {
 		this.formController = new FormController(this.onSubmitEvent.bind(this));
-		this.genericModal = new GenericModalController();
+		this.alertModal = new AlertModalController();
 		this.confirmationModal = new ConfirmationModalController();
 		this.amortizacoesListController = new AmortizacoesListController(this.confirmationModal);
 		this.amortizacaoModalController = new AmortizacaoModalController();
 		this.colorModeController = new ColorModeController();
 		this.simulacaoResultController = new SimulacaoResultController();
-		this.taxasResultController = new TaxasResultController();
+		this.ratesDisplayController = new RatesDisplayController();
 
 		this.setupForm();
 		this.setupAmortizacoes();
@@ -71,10 +74,10 @@ export class UIController {
 	}
 
 	public setupRates(selic: number, tr: number, ano: number) {
-		this.taxasResultController.render(selic, tr, ano);
+		this.ratesDisplayController.render(selic, tr, ano);
 	}
 
-	private onSubmitEvent(valores: ValoresSimulacao) {
+	private onSubmitEvent(valores: SimulationInput) {
 		this.amortizacoes.length = 0;
 		const parsed = this.amortizacoesListController.getEntries().map(entry =>
 			Amortizacao.create(entry.periodo, valores.prazoMeses, entry.intervalo, entry.valor)
@@ -91,23 +94,23 @@ export class UIController {
 		this.formController.setField(field, value);
 	}
 
-	public setAmortizacoes(entries: AmortizacaoModalResult[]) {
+	public setAmortizacoes(entries: ExtraAmortizationInput[]) {
 		this.amortizacoesListController.setEntries(entries);
 	}
 
 	public showModal(title: string, message: string, background: string = "bg-primary") {
-		this.genericModal.show(title, message, background);
+		this.alertModal.show(title, message, background);
 	}
 
 	public showAmortizacaoModal() {
 		this.amortizacaoModalController.show();
 	}
 
-	public showResultado(resultado: Resultado) {
+	public showResultado(resultado: SimulationResult) {
 		this.simulacaoResultController.render(resultado);
 	}
 
-	public getValoresSimulacao(): ValoresSimulacao {
+	public getValoresSimulacao(): SimulationInput {
 		return this.formController.getValoresSimulacao();
 	}
 
@@ -127,7 +130,7 @@ export class UIController {
 		this.colorModeController.setup();
 	}
 
-	private handleAmortizacaoSubmit(result: AmortizacaoModalResult) {
+	private handleAmortizacaoSubmit(result: ExtraAmortizationInput) {
 		this.amortizacoesListController.addEntry(result);
 	}
 

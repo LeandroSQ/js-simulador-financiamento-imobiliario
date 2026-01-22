@@ -1,17 +1,37 @@
-export * from "./amortizacao-entry";
-export * from "./amortizacao-modal-result";
-export * from "./amortizacao-modal-submit-handler";
-export * from "./color-mode-change-handler";
-export * from "./color-mode";
-export * from "./confirmation-modal-options";
-export * from "./correcao";
-export * from "./form-numeric-field";
-export * from "./header-background";
-export * from "./historico-mes";
-export * from "./periodo-prazo";
-export * from "./periodo";
-export * from "./resultado";
-export * from "./tabela";
-export * from "./valores-simulacao";
-export * from "./worker-request";
-export * from "./worker-response";
+// Consolidated type exports
+// Domain types (enums and core business concepts)
+export * from "./domain";
+
+// Simulation types (input, output, worker communication)
+export * from "./simulation";
+
+// UI types (color modes, modals, form fields, event handlers)
+export * from "./ui";
+
+// Legacy re-exports for backward compatibility
+// These can be removed once all imports are updated
+
+// From domain.ts
+export { Tabela, Correcao, Periodo, PeriodoPrazo } from "./domain";
+export type { PeriodoAmortizacao } from "./domain";
+
+// From simulation.ts
+export type {
+	ValoresSimulacao,
+	HistoricoMes,
+	Resultado,
+	AmortizacaoModalResult,
+	AmortizacaoEntry,
+	WorkerRequest,
+	WorkerResponse
+} from "./simulation";
+
+// From ui.ts
+export type {
+	ColorMode,
+	HeaderBackground,
+	ConfirmationModalOptions,
+	FormNumericField,
+	ColorModeChangeHandler,
+	AmortizacaoModalSubmitHandler
+} from "./ui";

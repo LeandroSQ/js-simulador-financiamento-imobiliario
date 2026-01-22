@@ -1,7 +1,11 @@
-import { Resultado } from "../types/resultado";
+import { SimulationResult } from "../types";
 
 import { ChartsController } from "./charts-controller";
 
+/**
+ * Controller for displaying simulation results.
+ * Renders summary statistics, payment schedule table, and charts.
+ */
 export class SimulacaoResultController {
 
 	private readonly container: HTMLElement;
@@ -34,7 +38,7 @@ export class SimulacaoResultController {
 		this.chartsController = new ChartsController();
 	}
 
-	public render(resultado: Resultado) {
+	public render(resultado: SimulationResult) {
 		const quantidadeParcelas = resultado.evolucao.length;
 
 		this.custoTotalEfetivoElement.textContent = resultado.custoTotalEfetivo.toCurrencyString();
@@ -51,7 +55,7 @@ export class SimulacaoResultController {
 		this.chartsController.render(resultado);
 	}
 
-	private renderTabela(evolucao: Resultado["evolucao"]) {
+	private renderTabela(evolucao: SimulationResult["evolucao"]) {
 		const existingRows = this.tableBody.querySelectorAll("tr");
 		existingRows.forEach(row => { row.remove(); });
 

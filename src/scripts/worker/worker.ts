@@ -1,27 +1,31 @@
+/**
+ * Web Worker for performing mortgage simulation calculations.
+ * Runs in a separate thread to avoid blocking the UI during heavy computations.
+ */
+
 import { SimuladorFinanciamento } from "../core/simulador-financiamento";
 import { Amortizacao } from "../models/amortizacao";
-import { WorkerRequest } from "../types";
+import { WorkerRequest } from "../types/simulation";
 
+/**
+ * Handles incoming simulation requests from the main thread.
+ */
 self.onmessage = (event: MessageEvent) => {
 	try {
 		const { data } = event;
-		const parsed = JSON.parse(data) as WorkerRequest;
+		const request = JSON.parse(data) as WorkerRequest;
 
-		const amortizacoes = parsed.amortizacoes.map(a => Amortizacao.fromJSON(a));
+		const extraAmortizations = request.amortizacoes.map(a => Amortizacao.fromJSON(a));
+		const simulator = new SimuladorFinanciamento(request.valores, extraAmortizations);
+		const result = simulator.calculate();
 
-		const simulador = new SimuladorFinanciamento(parsed.valores, amortizacoes);
-		const result = simulador.calculate();
-
-		const serialized = JSON.stringify(result);
-
-		postMessage({ data: serialized });
+		const serializedResult = JSON.stringify(result);
+		postMessage({ data: serializedResult });
 	} catch (error) {
 		console.error(error);
 		console.trace(error);
-		if (error instanceof Error) {
-			postMessage({ error: error.message });
-		} else {
-			postMessage({ error: String(error) });
-		}
+
+		const errorMessage = error instanceof Error ? error.message : String(error);
+		postMessage({ error: errorMessage });
 	}
 };

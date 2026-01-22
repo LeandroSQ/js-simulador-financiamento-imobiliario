@@ -1,15 +1,14 @@
 import "./utils/extensions";
-import { Amortizacao } from "./amortizacao";
-import { Selic } from "./services/selic";
-import { TR } from "./services/tr";
-import { ValoresSimulacao } from "./types/valores-simulacao";
+import { Amortizacao } from "./models/amortizacao";
+import { BCBRateService } from "./services/bcb-rate-service";
+import { SimulationInput } from "./types";
 import { UIController } from "./ui/ui-controller";
-import { WorkerBinding } from "./worker/worker-binding";
+import { SimulationWorkerBinding } from "./worker/worker-binding";
 
 class App {
 
 	private ui!: UIController;
-	private simulador = new WorkerBinding();
+	private simulador = new SimulationWorkerBinding();
 
 	constructor() {
 		const callback = Function.oneshot<VoidFunction>(this.setup.bind(this));
@@ -37,11 +36,11 @@ class App {
 
 	private async fetchRates() {
 		const year = new Date().getFullYear();
-		const selic = await Selic.fetchRate(year);
-		// const cdi = await Selic.getCdiRate();
-		const tr = await TR.fetchRate(year);
+		const [selic, tr] = await Promise.all([
+			BCBRateService.fetchSelicRate(year),
+			BCBRateService.fetchTRRate(year)
+		]);
 		console.log(`Taxa Selic atual: ${selic.toFixed(2)}% ao ano`);
-		// console.log(`Taxa CDI atual: ${cdi.toFixed(2)}% ao ano`);
 		console.log(`Taxa TR atual: ${tr.toFixed(2)}% ao ano`);
 
 		this.ui.setupRates(selic, tr, year);
@@ -67,7 +66,7 @@ class App {
 		}, 250);
 	}
 
-	private async onSubmit(valores: ValoresSimulacao) {
+	private async onSubmit(valores: SimulationInput) {
 		console.log("Simulação iniciada");
 		console.log(valores);
 

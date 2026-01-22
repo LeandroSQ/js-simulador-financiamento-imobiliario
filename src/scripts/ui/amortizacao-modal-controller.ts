@@ -1,10 +1,13 @@
 import * as bootstrap from "bootstrap";
 
 import { Amortizacao, PeriodoAmortizacao } from "../models/amortizacao";
-import { AmortizacaoModalSubmitHandler } from "../types";
+import { AmortizationModalSubmitHandler } from "../types";
 import { parseNumericField, validateMaskedNumericField } from "../utils/numeric-field";
 
-
+/**
+ * Controller for the extra amortization modal dialog.
+ * Handles user input for adding new amortization schedules.
+ */
 export class AmortizacaoModalController {
 
 	private readonly modalElement: HTMLElement;
@@ -14,7 +17,7 @@ export class AmortizacaoModalController {
 	private readonly intervaloInput: HTMLInputElement;
 	private readonly intervaloContainer: HTMLElement;
 	private readonly submitButton: HTMLButtonElement;
-	private submitHandler?: AmortizacaoModalSubmitHandler;
+	private submitHandler?: AmortizationModalSubmitHandler;
 
 	constructor(id: string = "amortizacao-modal") {
 		this.modalElement = document.getElementByIdOrThrow(id);
@@ -28,7 +31,7 @@ export class AmortizacaoModalController {
 		this.updateIntervaloVisibility();
 	}
 
-	public setup(submitHandler: AmortizacaoModalSubmitHandler) {
+	public setup(submitHandler: AmortizationModalSubmitHandler) {
 		this.submitHandler = submitHandler;
 
 		this.submitButton.addEventListener("click", () => { this.handleSubmit(); });

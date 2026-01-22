@@ -1,14 +1,18 @@
-import { AmortizacaoEntry, AmortizacaoModalResult } from "../types";
+import { ExtraAmortizationEntry, ExtraAmortizationInput } from "../types";
 
 import { ConfirmationModalController } from "./confirmation-modal-controller";
 
+/**
+ * Controller for managing the list of extra amortization entries.
+ * Handles adding, removing, and displaying amortization items.
+ */
 export class AmortizacoesListController {
 
 	private readonly container: HTMLElement;
 	private readonly template: HTMLTemplateElement;
 	private readonly emptyState: HTMLElement;
-	private readonly entries: AmortizacaoEntry[] = [];
-	private changeHandler?: (entries: AmortizacaoModalResult[]) => void;
+	private readonly entries: ExtraAmortizationEntry[] = [];
+	private changeHandler?: (entries: ExtraAmortizationInput[]) => void;
 
 	private notifyChange: VoidFunction;
 
@@ -24,11 +28,11 @@ export class AmortizacoesListController {
 		}, 100);
 	}
 
-	public onChange(handler: (entries: AmortizacaoModalResult[]) => void) {
+	public onChange(handler: (entries: ExtraAmortizationInput[]) => void) {
 		this.changeHandler = handler;
 	}
 
-	public addEntry(data: AmortizacaoModalResult) {
+	public addEntry(data: ExtraAmortizationInput) {
 		const fragment = this.template.content.cloneNode(true) as DocumentFragment;
 		const element = fragment.firstElementChild as HTMLElement | null;
 		if (!element) {
@@ -95,7 +99,7 @@ export class AmortizacoesListController {
 		this.notifyChange();
 	}
 
-	public setEntries(entries: AmortizacaoModalResult[]) {
+	public setEntries(entries: ExtraAmortizationInput[]) {
 		// Clear existing entries
 		while (this.entries.length > 0) {
 			this.removeEntry(0);
@@ -107,7 +111,7 @@ export class AmortizacoesListController {
 		}
 	}
 
-	public getEntries(): AmortizacaoModalResult[] {
+	public getEntries(): ExtraAmortizationInput[] {
 		return this.entries.map(entry => entry.data);
 	}
 

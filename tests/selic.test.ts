@@ -1,76 +1,84 @@
-import { Selic } from "../src/scripts/services/selic";
+import { BCBRateService } from "../src/scripts/services/bcb-rate-service";
 
 // Mock global fetch
 const mockFetch = jest.fn();
 (globalThis as any).fetch = mockFetch;
 
-// Mock localStorage
-const localStorageMock = (function() {
-  let store: any = {};
-  return {
-    getItem: jest.fn((key: string) => store[key] || null),
-    setItem: jest.fn((key: string, value: string) => {
-      store[key] = value.toString();
-    }),
-    clear: jest.fn(() => {
-      store = {};
-    }),
-    removeItem: jest.fn((key: string) => {
-      delete store[key];
-    })
-  };
+// Mock localStorage/sessionStorage
+const localStorageMock = (function () {
+	let store: any = {};
+	return {
+		getItem: jest.fn((key: string) => store[key] || null),
+		setItem: jest.fn((key: string, value: string) => {
+			store[key] = value;
+		}),
+		clear: jest.fn(() => {
+			store = {};
+		}),
+		removeItem: jest.fn((key: string) => {
+			delete store[key];
+		})
+	};
 })();
 
-Object.defineProperty(globalThis, 'localStorage', {
-  value: localStorageMock
-});
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
-describe("Selic", () => {
-    beforeEach(() => {
-        mockFetch.mockClear();
-        localStorageMock.getItem.mockClear();
-        localStorageMock.setItem.mockClear();
-        localStorageMock.clear();
-    });
+Object.defineProperty(globalThis, "sessionStorage", { value: localStorageMock });
 
-    test("should fetch from API if not cached", async () => {
-        mockFetch.mockResolvedValueOnce({
-            json: async () => ([{ data: "01/01/2023", valor: 13.75 }])
-        });
+describe("BCBRateService - SELIC", () => {
+	beforeEach(() => {
+		mockFetch.mockClear();
+		localStorageMock.getItem.mockClear();
+		localStorageMock.setItem.mockClear();
+		localStorageMock.clear();
+	});
 
-        const rate = await Selic.fetchRate(2023);
+	test("should fetch from API if not cached", async () => {
+		mockFetch.mockResolvedValueOnce({
+			json: () => ([
+				{
+					data: "01/01/2023",
+					valor: 13.75
+				}
+			])
+		});
 
-        expect(rate).toBe(13.75);
-        expect(mockFetch).toHaveBeenCalledTimes(1);
-        expect(localStorageMock.setItem).toHaveBeenCalledWith("selic-2023", "13.75");
-    });
+		const rate = await BCBRateService.fetchSelicRate(2023);
 
-    test("should return cached value if available", async () => {
-        localStorageMock.getItem.mockReturnValueOnce("10.5");
+		expect(rate).toBe(13.75);
+		expect(mockFetch).toHaveBeenCalledTimes(1);
+		expect(localStorageMock.setItem).toHaveBeenCalledWith("selic-2023", "13.75");
+	});
 
-        const rate = await Selic.fetchRate(2023);
+	test("should return cached value if available", async () => {
+		localStorageMock.getItem.mockReturnValueOnce("10.5");
 
-        expect(rate).toBe(10.5);
-        expect(mockFetch).not.toHaveBeenCalled();
-    });
+		const rate = await BCBRateService.fetchSelicRate(2023);
 
-    test("should fetch current year if no year provided", async () => {
-        mockFetch.mockResolvedValueOnce({
-            json: async () => ([{ data: "...", valor: 11.25 }])
-        });
+		expect(rate).toBe(10.5);
+		expect(mockFetch).not.toHaveBeenCalled();
+	});
 
-        const currentYear = new Date().getFullYear();
-        const rate = await Selic.fetchRate();
+	test("should fetch current year if no year provided", async () => {
+		mockFetch.mockResolvedValueOnce({
+			json: () => ([
+				{
+					data: "...",
+					valor: 11.25
+				}
+			])
+		});
 
-        expect(rate).toBe(11.25);
-        expect(localStorageMock.setItem).toHaveBeenCalledWith(`selic-${currentYear}`, "11.25");
-    });
+		const currentYear = new Date().getFullYear();
+		const rate = await BCBRateService.fetchSelicRate();
 
-    test("should throw error if API returns empty", async () => {
-        mockFetch.mockResolvedValueOnce({
-            json: async () => ([])
-        });
+		expect(rate).toBe(11.25);
+		expect(localStorageMock.setItem).toHaveBeenCalledWith(`selic-${currentYear}`, "11.25");
+	});
 
-        await expect(Selic.fetchRate(2023)).rejects.toThrow("Não foi possível obter a taxa Selic para o período especificado");
-    });
+	test("should throw error if API returns empty", async () => {
+		mockFetch.mockResolvedValueOnce({ json: () => ([]) });
+
+		await expect(BCBRateService.fetchSelicRate(2023)).rejects.toThrow("Não foi possível obter a taxa Selic para o período especificado");
+	});
 });

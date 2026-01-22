@@ -1,9 +1,11 @@
-import { Amortizacao } from "../src/scripts/models/amortizacao";
 import { SimuladorFinanciamento } from "../src/scripts/core/simulador-financiamento";
-import { Correcao } from "../src/scripts/types/correcao";
-import { Resultado } from "../src/scripts/types/resultado";
-import { Tabela } from "../src/scripts/types/tabela";
-import { ValoresSimulacao } from "../src/scripts/types/valores-simulacao";
+import { Amortizacao } from "../src/scripts/models/amortizacao";
+import {
+	Correcao,
+	Resultado,
+	Tabela,
+	ValoresSimulacao
+} from "../src/scripts/types";
 
 function assert(input: ValoresSimulacao, amortizacao: Amortizacao[] = [], expected: Partial<Resultado>) {
 	const simulador = new SimuladorFinanciamento(input, amortizacao);
@@ -149,9 +151,7 @@ describe("Simulador", () => {
 			prazoMeses: 420,
 			taxaAdministracaoMensal: 25,
 			seguroMensal: 43,
-		}, [
-			Amortizacao.create("Mensal", 420, undefined, 1000)
-		]);
+		}, [Amortizacao.create("Mensal", 420, undefined, 1000)]);
 
 		const result = simulador.calculate();
 		expect(result.valorParcelaInicial).toBeCloseTo(2_926.93, 2);

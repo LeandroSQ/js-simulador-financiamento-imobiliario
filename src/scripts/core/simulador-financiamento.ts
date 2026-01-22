@@ -20,21 +20,25 @@
  *
  */
 import { Amortizacao } from "../models/amortizacao";
-import { Correcao } from "../types/correcao";
-import { HistoricoMes } from "../types/historico-mes";
-import { Resultado } from "../types/resultado";
-import { Tabela } from "../types/tabela";
-import { ValoresSimulacao } from "../types/valores-simulacao";
+import {
+	Correcao,
+	HistoricoMes,
+	Resultado,
+	Tabela,
+	ValoresSimulacao
+} from "../types";
 
 export class SimuladorFinanciamento {
+
+	// For V2
+	private correcao: Correcao;
+	private projecaoTaxaJuros: number;
 
 	private valorImovel: number;
 	private valorEntrada: number;
 	private taxaJurosAnual: number;
 	private prazoMeses: number;
 	private tabela: Tabela;
-	private correcao: Correcao;
-	private projecaoTaxaJuros: number;
 	private seguroMensal: number;
 	private taxaAdministracaoMensal: number;
 	private amortizacoesExtraordinarias: Amortizacao[];
@@ -90,13 +94,13 @@ export class SimuladorFinanciamento {
 				.filter(a => a.appliesTo(mes))
 				.reduce((sum, a) => sum + a.valor, 0);
 			const amortizacaoMes = Math.min(amortizacaoFixa + amortizacaoExtraordinariaMes, saldoDevedor);
-			totalAmortizado += amortizacaoMes - amortizacaoFixa;
+			totalAmortizado += Math.max(amortizacaoMes - amortizacaoExtraordinariaMes, 0);
 
 			// Calcula as taxas mensais
 			const taxasMensais = this.seguroMensal + this.taxaAdministracaoMensal;
 			totalTaxas += taxasMensais;
 
-			// Prestação total do mês
+			// Prestação total do mês (principal + juros)
 			const prestacaoMes = amortizacaoMes + jurosMensais;
 
 			// Atualiza o saldo devedor

@@ -1,11 +1,8 @@
-import { FormNumericField, Periodo, PeriodoPrazo } from "../types";
-import { Correcao } from "../types/correcao";
-import { Tabela } from "../types/tabela";
-import { ValoresSimulacao } from "../types/valores-simulacao";
+import { Correcao, FormNumericField, Periodo, PeriodoPrazo, SimulationInput, Tabela } from "../types";
 import { parseNumericField, setNumericFieldValue, validateMaskedNumericField } from "../utils/numeric-field";
 
 
-export type OnSubmitEventListener = (values: ValoresSimulacao) => void;
+export type OnSubmitEventListener = (values: SimulationInput) => void;
 
 
 export class FormController {
@@ -138,15 +135,15 @@ export class FormController {
 		const isValid = this.validateForm();
 		if (!isValid) return false;
 
-		this.onSubmit(this.collectValoresSimulacao());
+		this.onSubmit(this.collectSimulationInput());
 		return true;
 	}
 
-	public getValoresSimulacao(): ValoresSimulacao {
-		return this.collectValoresSimulacao();
+	public getValoresSimulacao(): SimulationInput {
+		return this.collectSimulationInput();
 	}
 
-	private collectValoresSimulacao(): ValoresSimulacao {
+	private collectSimulationInput(): SimulationInput {
 		const valorImovel = parseNumericField(this.inputValor, { required: true });
 		const valorEntrada = parseNumericField(this.inputEntrada, { required: true });
 		const taxaJurosBruta = parseNumericField(this.inputJuros, { required: true });

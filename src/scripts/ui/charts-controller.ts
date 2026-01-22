@@ -1,21 +1,23 @@
-import { Resultado } from "../types/resultado";
+import { SimulationResult } from "../types";
 
 import { LineChart, LineSeries } from "./charts/line-chart";
-import { LineChartV1 } from "./charts/line-chart-v1";
 import { PieChart } from "./charts/pie-chart";
 
-// Get monitor pixel ratio
+/**
+ * Controller for rendering simulation result charts.
+ * Manages pie chart (cost breakdown) and line chart (payment evolution).
+ */
 export class ChartsController {
 
-	private chart1: PieChart | null = null;
-	private chart2: LineChart | null = null;
+	private costBreakdownChart: PieChart | null = null;
+	private paymentEvolutionChart: LineChart | null = null;
 
-	public render(resultado: Resultado) {
-		this.renderChart1(resultado);
-		this.renderChart2(resultado);
+	public render(resultado: SimulationResult) {
+		this.renderCostBreakdownChart(resultado);
+		this.renderPaymentEvolutionChart(resultado);
 	}
 
-	private renderChart1(resultado: Resultado) {
+	private renderCostBreakdownChart(resultado: SimulationResult) {
 		const { canvas, ctx } = this.setupChart("simulacao-chart1");
 
 		// Pie slice 0 - Valor Financiado
@@ -46,15 +48,15 @@ export class ChartsController {
 		];
 		// Let's throw an Easter egg here, the colors are actually from the RS flag :)
 
-		if (this.chart1 === null) {
-			this.chart1 = new PieChart(canvas, ctx, slices);
+		if (this.costBreakdownChart === null) {
+			this.costBreakdownChart = new PieChart(canvas, ctx, slices);
 		} else {
-			this.chart1.entries = slices;
-			this.chart1.invalidate();
+			this.costBreakdownChart.entries = slices;
+			this.costBreakdownChart.invalidate();
 		}
 	}
 
-	private renderChart2(resultado: Resultado) {
+	private renderPaymentEvolutionChart(resultado: SimulationResult) {
 		const { canvas, ctx } = this.setupChart("simulacao-chart2");
 
 		// Line chart showing evolution over time
@@ -94,12 +96,12 @@ export class ChartsController {
 			}
 		];
 
-		if (this.chart2 === null) {
-			this.chart2 = new LineChart(canvas, ctx, series);
+		if (this.paymentEvolutionChart === null) {
+			this.paymentEvolutionChart = new LineChart(canvas, ctx, series);
 		} else {
-			this.chart2.entries = series;
-			this.chart2.layout(); // Line chart needs to recalculate data bounds
-			this.chart2.invalidate();
+			this.paymentEvolutionChart.entries = series;
+			this.paymentEvolutionChart.layout(); // Line chart needs to recalculate data bounds
+			this.paymentEvolutionChart.invalidate();
 		}
 	}
 
@@ -115,8 +117,8 @@ export class ChartsController {
 	}
 
 	public onColorModeChange() {
-		this.chart1?.invalidate();
-		this.chart2?.invalidate();
+		this.costBreakdownChart?.invalidate();
+		this.paymentEvolutionChart?.invalidate();
 	}
 
 }
