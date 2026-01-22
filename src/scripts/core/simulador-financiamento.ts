@@ -94,7 +94,12 @@ export class SimuladorFinanciamento {
 				.filter(a => a.appliesTo(mes))
 				.reduce((sum, a) => sum + a.valor, 0);
 			const amortizacaoMes = Math.min(amortizacaoFixa + amortizacaoExtraordinariaMes, saldoDevedor);
-			totalAmortizado += Math.max(amortizacaoMes - amortizacaoExtraordinariaMes, 0);
+			// Only count extra amortization actually applied (can't exceed saldoDevedor)
+			const amortizacaoExtraAplicada = Math.min(
+				amortizacaoExtraordinariaMes,
+				Math.max(amortizacaoMes - amortizacaoFixa, 0)
+			);
+			totalAmortizado += amortizacaoExtraAplicada;
 
 			// Calcula as taxas mensais
 			const taxasMensais = this.seguroMensal + this.taxaAdministracaoMensal;

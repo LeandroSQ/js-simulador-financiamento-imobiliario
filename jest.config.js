@@ -10,5 +10,13 @@ module.exports = {
 	forceExit: true,
 	detectOpenHandles: true,
 	verbose: true,
-	globals: { DEBUG: true }
+	globals: { DEBUG: true },
+	transform: {
+		"^.+\\.ts$": [
+			"ts-jest",
+			{
+				isolatedModules: true
+			}
+		]
+	}
 };

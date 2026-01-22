@@ -4,6 +4,9 @@ import { BCBRateService } from "../src/scripts/services/bcb-rate-service";
 const mockFetch = jest.fn();
 (globalThis as any).fetch = mockFetch;
 
+// Ensure debug flag exists for cache selection
+(globalThis as any).DEBUG = true;
+
 // Mock localStorage/sessionStorage
 const localStorageMock = (function() {
 	let store: any = {};

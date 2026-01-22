@@ -29,9 +29,9 @@ export type {
 // From ui.ts
 export type {
 	ColorMode,
-	HeaderBackground,
+	ModalBackground,
 	ConfirmationModalOptions,
 	FormNumericField,
 	ColorModeChangeHandler,
-	AmortizacaoModalSubmitHandler
+	AmortizationModalSubmitHandler
 } from "./ui";

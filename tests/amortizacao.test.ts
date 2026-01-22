@@ -4,22 +4,22 @@ describe("Amortizacao", () => {
 	describe("create", () => {
 		test("should create MonthlyAmortization", () => {
 			const amortizacao = Amortizacao.create("Mensal", 12, undefined, 100);
-			expect(amortizacao.constructor.name).toBe("MonthlyAmortization");
+			expect(amortizacao.type).toBe("Mensal");
 		});
 
 		test("should create AnnualAmortization", () => {
 			const amortizacao = Amortizacao.create("Anual", 12, undefined, 100);
-			expect(amortizacao.constructor.name).toBe("AnnualAmortization");
+			expect(amortizacao.type).toBe("Anual");
 		});
 
 		test("should create BiennialAmortization", () => {
 			const amortizacao = Amortizacao.create("Bienal", 24, undefined, 100);
-			expect(amortizacao.constructor.name).toBe("BiennialAmortization");
+			expect(amortizacao.type).toBe("Bienal");
 		});
 
 		test("should create CustomAmortization", () => {
 			const amortizacao = Amortizacao.create("Outro", 12, "1,5-10", 100);
-			expect(amortizacao.constructor.name).toBe("CustomAmortization");
+			expect(amortizacao.type).toBe("Outro");
 		});
 
 		test("should throw error for invalid period", () => {
@@ -115,9 +115,7 @@ describe("Amortizacao", () => {
 			const restored = Amortizacao.fromJSON(serialized);
 
 			expect(restored).toBeInstanceOf(Amortizacao);
-
-			// Since we export the class abstractly, we might check constructor name if classes are not exported
-			expect(restored.constructor.name).toBe("MonthlyAmortization");
+			expect(restored.type).toBe("Mensal");
 			expect(restored.valor).toBe(100);
 			expect(restored.appliesTo(1)).toBe(true);
 		});
@@ -128,7 +126,7 @@ describe("Amortizacao", () => {
 			const restored = Amortizacao.fromJSON(serialized);
 
 			expect(restored).toBeInstanceOf(Amortizacao);
-			expect(restored.constructor.name).toBe("CustomAmortization");
+			expect(restored.type).toBe("Outro");
 			expect(restored.valor).toBe(200);
 			expect(restored.appliesTo(3)).toBe(true);
 			expect(restored.appliesTo(6)).toBe(false);

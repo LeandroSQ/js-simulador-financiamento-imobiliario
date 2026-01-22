@@ -56,7 +56,8 @@ export abstract class Amortizacao {
 	}
 
 	public static fromJSON(json: any): Amortizacao {
-		return Amortizacao.create(json.type, json.prazoMeses ?? 0, json.input, json.valor);
+		const termMonths = json.termMonths ?? json.prazoMeses ?? 0;
+		return Amortizacao.create(json.type, termMonths, json.input, json.valor);
 	}
 
 	/**
